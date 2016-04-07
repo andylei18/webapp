@@ -1,0 +1,35 @@
+10
+
+dir
+0
+svn://dinglei@211.151.70.29/svn/ria/customer/biz/branches/20160316_VueGroup/webapp/src/mock
+svn://dinglei@211.151.70.29/svn
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+5e209b29-4666-47e1-8dfc-d676ec2cbe28
+
+list.json
+file
+
+
+
+add
+

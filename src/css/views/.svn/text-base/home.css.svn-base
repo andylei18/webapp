@@ -1,0 +1,95 @@
+.header {
+    width: 100%;
+    height: 40px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,.7);
+    z-index: 10;
+    display: block;
+}
+.header:after, .header:before {
+    content: "";
+    display: table;
+    clear: both;
+}
+.header .item {
+    padding: 0 15px;
+    color: #fff;
+    float: left;
+}
+.header .iconfont {
+    font-size: 24px;
+    line-height: 40px;
+}
+.iconfont, .rule span {
+    font-size: 1.2rem;
+}
+.iconfont {
+    font-family: iconfont!important;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: .2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-class:before {
+    content: "\e60e";
+}
+.header-search {
+    position: relative;
+    width: 100%;
+    -webkit-flex: 1;
+    margin: 0 10px;
+    color: #5e5e5e;
+}
+.header .icon-search {
+    font-size: 18px;
+}
+
+.header-search i {
+    position: absolute;
+    left: 5px;
+    top: 17px;
+    z-index: 2;
+}
+.header-search input {
+    width: 100%;
+    height: 32px;
+    line-height: 2rem;
+    margin: 10px 0 0;
+    padding: 5px 3px 5px 30px;
+    box-sizing: border-box;
+    background: #000;
+    color: #5e5e5e;
+}
+.header .item:last-child {
+    float: right;
+    width: 50%;
+    text-align: right;
+}
+.header .user-center {
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 100%;
+}
+.header .item:last-child .iconfont {
+    font-size: 25px;
+}
+.icon-mine:before {
+    content: "\e604";
+}
+.header .cart {
+    position: relative;
+    display: inline-block;
+    color: #fff;
+    margin-left: 15px;
+}
+.icon-cart:before {
+    content: "\e621";
+}
+.header .cart sup {
+    top: 6px;
+    right: -8px;
+    font-size: 12px;
+}

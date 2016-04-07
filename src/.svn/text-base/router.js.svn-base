@@ -1,0 +1,20 @@
+/**
+ * Created by dinglei on 16/3/18.
+ */
+
+
+module.exports = function(router){
+    //路由表
+    router.map({
+        '/':{										   //默认
+            name:'index',
+            component: require('./app.vue')
+        },
+        '/home':{										//首页
+            name:'home',
+            component: require('./views/home.vue')
+        },
+
+    });
+
+};

@@ -1,0 +1,12 @@
+{
+  "main": [
+    "build.js",
+    "style.css",
+    "build.js.map",
+    "style.css.map"
+  ],
+  "vendor.js": [
+    "vendor.js",
+    "vendor.js.map"
+  ]
+}

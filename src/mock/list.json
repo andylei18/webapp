@@ -1,0 +1,27 @@
+{
+  "code":0,
+  "message":"ok!",
+  "data":{
+    "userid":"2334",
+    "menu":{
+      "list|1-10": [{
+        "id|+1": 1,
+        "name|1-10": "睡得晚"
+      }]
+    },
+    "banner":[
+      {"id":"001","url":"http://p.qpic.cn/qqjifen_pic/0/upload_056b319d09eaa8a8868a8b77ea09fb5e/0"},
+      {"id":"002","url":"http://p.qpic.cn/qqjifen_pic/0/upload_39ee37ee0b206065428b359c3859f593/0"},
+      {"id":"003","url":"http://p.qpic.cn/qqjifen_pic/0/upload_98935bb643ef335a3d374810622f938f/0"},
+      {"id":"004","url":"http://p.qpic.cn/qqjifen_pic/0/upload_4949b84c8e3542b2ed7196acd5859c0a/0"}
+    ],
+    "goodlist":[
+      {"id":"001","img":"http://p.qpic.cn/qqjifen_pic/0/upload_1f612d3e712ef34853921cb4d2985423/0","name":"CF造型人字拖","price":"721","goodsid":"915"},
+      {"id":"002","img":"http://p.qpic.cn/qqjifen_pic/0/upload_e0c72eab91ebba89f7f1086875c36766/0","name":"QQ京剧公交卡套","price":"605","goodsid":"1033"},
+      {"id":"003","img":"http://p.qpic.cn/qqjifen_pic/0/upload_5027d5b87bb90b8e887a2f33827a862c/0","name":"AWM狙击步枪","price":"3622","goodsid":"926"},
+      {"id":"004","img":"http://p.qpic.cn/qqjifen_pic/0/upload_c7c8af5fbcd6eced088317cc9f00f4a6/0","name":"【赠送英雄礼包】DNF剑魔之心喉震耳机","price":"2492","goodsid":"1058"},
+      {"id":"005","img":"http://p.qpic.cn/qqjifen_pic/0/upload_75f2a36717724149da6a061e56797401/0","name":"尸兄-小鹿公仔（20CM)","price":"785","goodsid":"970"}
+    ]
+
+  }
+}
