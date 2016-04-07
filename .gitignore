@@ -1,0 +1,5 @@
+node_modules/
+build/
+d.html
+npm-debug.log
+.svn/

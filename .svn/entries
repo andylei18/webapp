@@ -1,7 +1,7 @@
 10
 
 dir
-213461
+216787
 svn://dinglei@211.151.70.29/svn/ria/customer/biz/branches/20160316_VueGroup/webapp
 svn://dinglei@211.151.70.29/svn
 
@@ -23,7 +23,7 @@ dinglei
 
 
 
-
+incomplete
 5e209b29-4666-47e1-8dfc-d676ec2cbe28
 
 build
@@ -36,77 +36,9 @@ add
 dist
 dir
 
-index.html
-file
-
-
-
-
-2016-03-23T08:27:04.000000Z
-6e2f9e2dae6c484d93429f250c80b178
-2016-03-23T07:29:23.677011Z
-213442
-dinglei
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-660
-
-index.tpl
-file
-
-
-
-
-2016-03-23T08:27:04.000000Z
-d6fc889bff7faba6d58d9027f74f7071
-2016-03-23T07:29:23.677011Z
-213442
-dinglei
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-595
-
 package.json
 file
-
+213461
 
 
 
@@ -138,12 +70,87 @@ has-props
 
 1199
 
+.gitignore
+file
+0
+
+
+add
+
+index.tpl
+file
+213461
+
+
+
+2016-03-23T08:27:04.000000Z
+d6fc889bff7faba6d58d9027f74f7071
+2016-03-23T07:29:23.677011Z
+213442
+dinglei
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+595
+
 src
 dir
 
+index.html
+file
+213461
+
+
+
+2016-03-23T08:27:04.000000Z
+6e2f9e2dae6c484d93429f250c80b178
+2016-03-23T07:29:23.677011Z
+213442
+dinglei
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+660
+
 webpack.config.js
 file
-
+213461
 
 
 
