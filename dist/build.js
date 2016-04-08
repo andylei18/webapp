@@ -2,7 +2,7 @@ webpackJsonp([0,1],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(6);
+	module.exports = __webpack_require__(7);
 
 
 /***/ },
@@ -11,36 +11,37 @@ webpackJsonp([0,1],[
 /* 3 */,
 /* 4 */,
 /* 5 */,
-/* 6 */
+/* 6 */,
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {/**
 	 * Created by dinglei on 16/3/18.
 	 */
 	//VUE 依赖配置
-	var Vue = __webpack_require__(8);
-	var VueRouter = __webpack_require__(10);
+	var Vue = __webpack_require__(9);
+	var VueRouter = __webpack_require__(11);
 	Vue.use(VueRouter);
-	var VueAsyncData = __webpack_require__(11);
+	var VueAsyncData = __webpack_require__(12);
 	Vue.use(VueAsyncData);
-	var App = Vue.extend(__webpack_require__(12));
+	var App = Vue.extend(__webpack_require__(13));
 	
 	$.ajaxSettings.crossDomain = true;
 	
 	//防止点击穿透
-	var fastclick = __webpack_require__(19);
+	var fastclick = __webpack_require__(20);
 	fastclick.attach(document.body);
 	
 	// 使用 Mock
-	window.Mock = __webpack_require__(20);
+	window.Mock = __webpack_require__(21);
 	
 	var router = new VueRouter({
-	    hashbang: true,  //为true的时候 example.com/#!/foo/bar ， false的时候 example.com/#/foo/bar
 	    //abstract:true,
 	    //地址栏不会有变化
 	    //以下设置需要服务端设置
 	    //history: false,   //当使用 HTML5 history 模式时，服务器需要被正确配置 以防用户在直接访问链接时会遇到404页面。
 	    //saveScrollPosition: false
+	    hashbang: true,
 	    history: false,
 	    saveScrollPosition: true,
 	    transitionOnLoad: true,
@@ -48,28 +49,65 @@ webpackJsonp([0,1],[
 	});
 	
 	//登录中间验证，页面需要登录而没有登录的情况直接跳转登录
-	router.beforeEach(function(transition) {
+	
+	window.routeList=[];
+	
+	router.beforeEach(function (transition) {
 	    //处理左侧滚动不影响右边
-	    //$("html, body, #page").removeClass("scroll-hide");
-	    if (transition.to.auth) {
-	        if (localStorage.userId) {
-	            transition.next();
-	        } else {
-	            var redirect = encodeURIComponent(transition.to.path);
-	            transition.redirect('/login?redirect=' + redirect);
-	        }
-	    } else {
-	        transition.next();
+	    //$("html, body, .page").removeClass("scroll-hide");
+	
+	    //可以通过在路由中的自定义字段来验证用户是否需要登陆
+	
+	    // if(transition.to.auth){
+	    // 	console.log('通过配置路由中自定义的字段验证是否需要登陆');
+	    // }
+	
+	    if(transition.to.name == 'forbidden'){
+	
+	        router.app.authenticating = true;
+	        setTimeout(function(){
+	            router.app.authenticating = false;
+	            alert('此路由在全局中设置为中止');
+	            transition.abort();
+	        },1500);
 	    }
+	
+	    if(routeList.length > 1 && transition.to.name==routeList[routeList.length-2]['name']){
+	
+	        router.app.effect='back';
+	
+	        routeList.splice(routeList.length-1,1);
+	
+	    } else {
+	
+	        router.app.effect='fade';
+	
+	        routeList.push({
+	            name : transition.to.name,
+	            path : transition.to.path,
+	            query : transition.to.query,
+	            params : transition.to.params,
+	            timer: +new Date
+	        });
+	
+	    }
+	
+	    transition.next();
 	});
 	
-	__webpack_require__(21)(router);
+	//注册路由切换后
+	router.afterEach(function (transition) {
+	    console.log('成功浏览到: ' + transition.to.path)
+	    //$.refreshScroller();
+	});
+	
+	__webpack_require__(22)(router);
 	
 	router.start(App,'#app');
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	/* Zepto v1.1.6 - zepto event ajax form ie - zeptojs.com/license */
@@ -1658,7 +1696,7 @@ webpackJsonp([0,1],[
 	})(Zepto)
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {/*!
@@ -11364,10 +11402,10 @@ webpackJsonp([0,1],[
 	}
 	
 	module.exports = Vue;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(9)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(10)))
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -11464,7 +11502,7 @@ webpackJsonp([0,1],[
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -14118,7 +14156,7 @@ webpackJsonp([0,1],[
 	}));
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function () {
@@ -14195,12 +14233,12 @@ webpackJsonp([0,1],[
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(13)
-	module.exports = __webpack_require__(17)
-	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(18)
+	__webpack_require__(14)
+	module.exports = __webpack_require__(18)
+	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(19)
 	if (false) {
 	(function () {
 	var hotAPI = require("/Users/dinglei/程序代码/工作/时趣互动/2016/20160316_VueGroup/webapp/node_modules/vue-loader/node_modules/vue-hot-reload-api/index.js")
@@ -14217,16 +14255,16 @@ webpackJsonp([0,1],[
 	}
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(14);
+	var content = __webpack_require__(15);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(17)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -14243,21 +14281,21 @@ webpackJsonp([0,1],[
 	}
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(16)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "/*\n   页脚样式\n   */\n    .g-footer{\n        z-index: 2;\n        position: fixed;\n        bottom: 0;\n        width: 100%;\n        max-width: 640px;\n        padding: 1.5% 0;\n        background-color: #fff;\n        border-top: 1px solid #ddd;\n    }\n    .g-footer .item{\n        float: left;\n        width: 33%;\n        text-align: center;\n    }\n    .g-footer .item a {\n        display: block;\n        padding: 3% 0;\n        border-left: 1px solid #fff;\n        border-right: 1px solid #cecece;\n        color: #7b7b7b;\n        font-size: 12px;\n        line-height: 1.8em;\n    }\n    .g-footer .item:nth-child(1) a {\n        border-left: none;\n    }\n    .g-footer .item:nth-child(3) a {\n        border-right: none;\n    }\n    .g-footer .item a.nav-active{\n        color: #ff6600;\n    }\n\n    .g-view {\n        -webkit-transition: all .3s ease;\n        transition: all .3s ease;\n        position: absolute;\n        display: block;\n        width: 100%;\n        height: 100%;\n    }\n    .fade-enter{\n        opacity: 1;\n        transform: translate3d(100%, 0, 0);\n    }\n\n    .fade-leave {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0);\n\n    }\n\n    .back-enter {\n        opacity: 1;\n        -webkit-transform: translate3d(-110%, 0, 0);\n        transform: translate3d(-110%, 0, 0);\n\n    }\n    .back-leave{\n        opacity: 0;\n        /*transform: translate3d(100%, 0, 0);*/\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0);\n    }\n\n    .bounce-enter {\n        animation: bounce-in .5s;\n    }\n    .bounce-leave {\n        animation: bounce-out .5s;\n    }\n    @keyframes bounce-in {\n        0% {\n            transform: scale(0);\n        }\n        50% {\n            transform: scale(1.5);\n        }\n        100% {\n            transform: scale(1);\n        }\n    }\n    @keyframes bounce-out {\n        0% {\n            transform: scale(1);\n        }\n        50% {\n            transform: scale(1.5);\n        }\n        100% {\n            transform: scale(0);\n        }\n    }\n\n    .card-scroll {\n        height: 100%;\n    }\n    .card-active {\n    }\n    .card-page {\n        width: 100%;\n        position: absolute;\n    }", ""]);
+	exports.push([module.id, ".g-view {\n        -webkit-transition: all .3s ease;\n        transition: all .3s ease;\n    }\n\n    .fade-enter{\n        opacity: 1;\n        transform: translate3d(100%, 0, 0);\n    }\n    .fade-leave {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0);\n\n    }\n\n    .back-enter {\n        opacity: 1;\n        -webkit-transform: translate3d(-110%, 0, 0);\n        transform: translate3d(-110%, 0, 0);\n\n    }\n    .back-leave{\n        opacity: 0;\n        /*transform: translate3d(100%, 0, 0);*/\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0);\n    }\n\n\n\n    .card-scroll {\n        height: 100%;\n    }\n    .card-active {\n    }\n    .card-page {\n        width: 100%;\n        position: absolute;\n    }\n    .wrap, .wrap-card{\n        position: relative;\n        width: 100%;\n        height: 100%;\n        background: #1a1d20;\n    }", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	/*
@@ -14313,7 +14351,7 @@ webpackJsonp([0,1],[
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -14538,26 +14576,31 @@ webpackJsonp([0,1],[
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = {
+	        data: function() {
+	            return {
+	                effect            : 'fade', //路由模板动画参数
+	                routeList         : [],     //访问周期中所访问了那些路径,在route.js中设置
+	            };
+	        },
 	        ready:function(){
 	            var _self = this;
-	
-	            this.$router.go("home");
+	            //this.$router.go({name:'cart'});
 	
 	        }
 	    }
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"card-page card-active card-scroll\">\n\n        <!-- 缓存一级路由切换的页面 -->\n        <router-view keep-alive :transition=\"effect\" transition-mode=\"out-in\"></router-view>\n    </div>";
+	module.exports = "<div class=\"card-page card-active card-scroll\">\n\n        <!-- 缓存一级路由切换的页面 -->\n        <router-view class=\"g-view\" keep-alive :transition=\"effect\" transition-mode=\"out-in\"></router-view>\n\n    </div>";
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;;(function () {
@@ -15404,7 +15447,7 @@ webpackJsonp([0,1],[
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {(function webpackUniversalModuleDefinition(root, factory) {
@@ -23830,10 +23873,10 @@ webpackJsonp([0,1],[
 	/******/ ])
 	});
 	;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23844,13 +23887,35 @@ webpackJsonp([0,1],[
 	module.exports = function(router){
 	    //路由表
 	    router.map({
-	        '/':{										   //默认
+	        //默认
+	        '/':{
 	            name:'index',
-	            component: __webpack_require__(12)
+	            component: __webpack_require__(13)
+	
 	        },
-	        '/home':{										//首页
-	            name:'home',
-	            component: __webpack_require__(22)
+	        //首页
+	        '/list':{
+	            name:'list',
+	            component: __webpack_require__(23)
+	        },
+	        //商品详情页
+	        '/detail/:goodsid':{
+	            name:'detail',
+	            component: __webpack_require__(36)
+	        },
+	
+	        //购物车页
+	        '/cart':{
+	            name:'cart',
+	            component: __webpack_require__(41)
+	        },
+	
+	
+	
+	        //个人中心页
+	        '/user/:userid':{
+	            name:'user',
+	            component: __webpack_require__(46)
 	        },
 	
 	    });
@@ -23858,45 +23923,45 @@ webpackJsonp([0,1],[
 	};
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(23)
-	module.exports = __webpack_require__(25)
-	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(44)
+	__webpack_require__(24)
+	module.exports = __webpack_require__(26)
+	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(35)
 	if (false) {
 	(function () {
 	var hotAPI = require("/Users/dinglei/程序代码/工作/时趣互动/2016/20160316_VueGroup/webapp/node_modules/vue-loader/node_modules/vue-hot-reload-api/index.js")
 	hotAPI.install(require("vue"))
 	if (!hotAPI.compatible) return
-	var id = "-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./home.vue"
+	var id = "-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./list.vue"
 	hotAPI.createRecord(id, module.exports)
-	module.hot.accept(["-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./home.vue","-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./home.vue"], function () {
-	var newOptions = require("-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./home.vue")
-	var newTemplate = require("-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./home.vue")
+	module.hot.accept(["-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./list.vue","-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./list.vue"], function () {
+	var newOptions = require("-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./list.vue")
+	var newTemplate = require("-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./list.vue")
 	hotAPI.update(id, newOptions, newTemplate)
 	})
 	})()
 	}
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(24);
+	var content = __webpack_require__(25);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(17)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./home.vue");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./list.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./list.vue");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -23906,28 +23971,31 @@ webpackJsonp([0,1],[
 	}
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(16)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "body {\n        font-family: \"Hiragino Sans GB W3\",\"Heiti SC\",\"Helvetica Neue\",Helvetica;\n        font-size: 1.4rem;\n        background: #1a1d20;\n        color: #fff;\n    }\n    .slide-on .page {\n        -webkit-animation: slider1 .2s linear forwards;\n    }\n    @-webkit-keyframes slider1{\n        0%{-webkit-transform:translate3d(0,0,0)}\n        100%{-webkit-transform:translate3d(27rem,0,0)}\n    }\n    .scroll-hide {\n        height: 100%;\n        overflow: hidden;\n    }\n    .page {\n        background-color: #fff;\n        -webkit-transition: all .3s ease;\n        transition: all .3s ease;\n        overflow-x: hidden;\n    }\n    .header {\n        width: 100%;\n        height: 40px;\n        position: fixed;\n        top: 0;\n        left: 0;\n        background: rgba(0,0,0,.7);\n        z-index: 10;\n        display: block;\n        -webkit-transition: all .3s ease;\n        transition: all .3s ease;\n    }\n    .header:after, .header:before {\n        content: \"\";\n        display: table;\n        clear: both;\n    }\n    .header .item {\n        padding: 0 15px;\n        color: #fff;\n        float: left;\n    }\n    .header .iconfont {\n        font-size: 24px;\n        line-height: 40px;\n    }\n    .iconfont, .rule span {\n        font-size: 1.2rem;\n    }\n    .iconfont {\n        font-family: iconfont!important;\n        -webkit-font-smoothing: antialiased;\n        -webkit-text-stroke-width: .2px;\n        -moz-osx-font-smoothing: grayscale;\n    }\n\n    .icon-class:before {\n        content: \"\\E60E\";\n    }\n    .header-search {\n        position: relative;\n        width: 100%;\n        -webkit-flex: 1;\n        margin: 0 10px;\n        color: #5e5e5e;\n    }\n    .header .icon-search {\n        font-size: 18px;\n    }\n\n    .header-search i {\n        position: absolute;\n        left: 5px;\n        top: 17px;\n        z-index: 2;\n    }\n    .header-search input {\n        width: 100%;\n        height: 32px;\n        line-height: 2rem;\n        margin: 10px 0 0;\n        padding: 5px 3px 5px 30px;\n        box-sizing: border-box;\n        background: #000;\n        color: #5e5e5e;\n    }\n    .header .item:last-child {\n        float: right;\n        width: 50%;\n        text-align: right;\n    }\n    .header .user-center {\n        position: relative;\n        display: inline-block;\n        width: 25px;\n        height: 100%;\n    }\n    .header .item:last-child .iconfont {\n        font-size: 25px;\n    }\n    .icon-mine:before {\n        content: \"\\E604\";\n    }\n    .header .cart {\n        position: relative;\n        display: inline-block;\n        color: #fff;\n        margin-left: 15px;\n    }\n    .icon-cart:before {\n        content: \"\\E621\";\n    }\n    .header .cart sup {\n        top: 6px;\n        right: -8px;\n        font-size: 12px;\n    }\n    .header.show,.listScroll.show{\n        -webkit-transform: translateX(300px);\n        transform: translateX(300px);\n    }\n    .listScroll {\n        overflow: scroll;\n        -webkit-overflow-scrolling: touch;\n    }\n    .listScroll {\n        position: absolute;\n        top: 0px;\n        bottom: 0px;\n        left: 0px;\n        right: 0px;\n    }\n    .ad-banner-crousel {\n        width: 100%;\n        padding-top: 40px;\n    }\n\n    .ad-banner-crousel, .carousel-inner {\n        position: relative;\n        overflow: hidden;\n    }\n    .page-cover {\n        position: fixed;\n        top: 0;\n        right: 0;\n        bottom: 0;\n        left: 0;\n        background: rgba(0, 0, 0, 0.5);\n        z-index: 7;\n    }", ""]);
+	exports.push([module.id, "body {\n        font-family: \"Hiragino Sans GB W3\",\"Heiti SC\",\"Helvetica Neue\",Helvetica;\n        font-size: 1.4rem;\n        background: #1a1d20;\n        color: #fff;\n    }\n    .slide-on .page {\n        -webkit-animation: slider1 .2s linear forwards;\n    }\n    @-webkit-keyframes slider1{\n        0%{-webkit-transform:translate3d(0,0,0)}\n        100%{-webkit-transform:translate3d(27rem,0,0)}\n    }\n    .scroll-hide {\n        height: 100%;\n        overflow: hidden;\n    }\n    .page {\n        background-color: #fff;\n        -webkit-transition: all .3s ease;\n        transition: all .3s ease;\n        overflow-x: hidden;\n    }\n    .header {\n        width: 100%;\n        height: 40px;\n        position: fixed;\n        top: 0;\n        left: 0;\n        background: rgba(0,0,0,.7);\n        z-index: 10;\n        display: block;\n        -webkit-transition: all .3s ease;\n        transition: all .3s ease;\n    }\n    .header:after, .header:before {\n        content: \"\";\n        display: table;\n        clear: both;\n    }\n    .header .item {\n        padding: 0 15px;\n        color: #fff;\n        float: left;\n    }\n    .header .iconfont {\n        font-size: 24px;\n        line-height: 40px;\n    }\n    .iconfont, .rule span {\n        font-size: 1.2rem;\n    }\n    .iconfont {\n        font-family: iconfont!important;\n        -webkit-font-smoothing: antialiased;\n        -webkit-text-stroke-width: .2px;\n        -moz-osx-font-smoothing: grayscale;\n    }\n\n    .icon-class:before {\n        content: \"\\E60E\";\n    }\n    .header-search {\n        position: relative;\n        width: 100%;\n        -webkit-flex: 1;\n        margin: 0 10px;\n        color: #5e5e5e;\n    }\n    .header .icon-search {\n        font-size: 18px;\n    }\n\n    .header-search i {\n        position: absolute;\n        left: 5px;\n        top: 17px;\n        z-index: 2;\n    }\n    .header-search input {\n        width: 100%;\n        height: 32px;\n        line-height: 2rem;\n        margin: 10px 0 0;\n        padding: 5px 3px 5px 30px;\n        box-sizing: border-box;\n        background: #000;\n        color: #5e5e5e;\n    }\n    .header .item:last-child {\n        float: right;\n        width: 50%;\n        text-align: right;\n    }\n    .header .user-center {\n        position: relative;\n        display: inline-block;\n        width: 25px;\n        height: 100%;\n    }\n    .header .item:last-child .iconfont {\n        font-size: 25px;\n    }\n    .icon-mine:before {\n        content: \"\\E604\";\n    }\n    .header .cart {\n        position: relative;\n        display: inline-block;\n        color: #fff;\n        margin-left: 15px;\n    }\n    .icon-cart:before {\n        content: \"\\E621\";\n    }\n    .header .cart sup {\n        top: 6px;\n        right: -8px;\n        font-size: 12px;\n    }\n    sup {\n        height: 16px;\n        width: 16px;\n        line-height: 16px;\n        color: #fff;\n        background-color: #35c367;\n        top: 2px;\n        right: 5px;\n    }\n\n    .btn-round-cart, sup {\n        border-radius: 100%;\n        text-align: center;\n        position: absolute;\n    }\n    .header.show,.listScroll.show{\n        -webkit-transform: translateX(300px);\n        transform: translateX(300px);\n    }\n    .listScroll {\n        overflow: scroll;\n        -webkit-overflow-scrolling: touch;\n    }\n    .listScroll {\n        position: absolute;\n        top: 0px;\n        bottom: 0px;\n        left: 0px;\n        right: 0px;\n    }\n\n    .page-cover {\n        position: fixed;\n        top: 0;\n        right: 0;\n        bottom: 0;\n        left: 0;\n        background: rgba(0, 0, 0, 0.5);\n        z-index: 7;\n    }\n    .ad-banner-crousel {\n        width: 100%;\n        padding-top: 40px;\n    }\n    .ad-banner-crousel, .carousel-inner {\n        position: relative;\n        overflow: hidden;\n    }\n    .page .ui-product:first-child {\n        margin-top: 1rem;\n        display: inline-block;\n    }\n    .ad, .ui-product {\n        position: relative;\n    }\n    .ui-product {\n        width: 100%;\n        font-size: 0;\n        margin-bottom: 1rem;\n    }\n    img {\n        font-size: 0;\n        background-size: contain;\n    }\n    a, button, img {\n        -webkit-touch-callout: none;\n        -webkit-tap-highlight-color: rgba(255,0,0,0);\n    }\n\n    .ui-product .reply span {\n        padding: 0 10px;\n        background: rgba(0,0,0,.7);\n        float: left;\n        height: 3rem;\n    }\n    .ui-product .reply {\n        position: absolute;\n        bottom: 4.5rem;\n        right: 0;\n        color: #fff;\n        font-size: 1.4rem;\n        vertical-align: middle;\n        line-height: 3rem;\n        height: 3rem;\n    }\n    .icon-mark, .icon-mark:after, .ui-box, .ui-product .reply span, .warn-tips, .warn-tips p {\n        display: inline-block;\n    }\n\n    h4, p {\n        font-size: 1.4rem;\n    }\n    .ui-product .reply span:last-child {\n        background: rgba(21,21,21,.75);\n    }\n    .icon-love, .icon-lovefull {\n        font-size: 1.4rem;\n        margin-right: 2px;\n        vertical-align: 1px;\n        color: #fff;\n    }", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function($) {//require('../../src/css/views/home.css');
+	    __webpack_require__(27);
+	    __webpack_require__(28);
 	
 	    module.exports = {
 	        data: function() {
 	            return{
+	                userid:'',
 	                menu:{
 	                    show:false,
 	                    list:[]
@@ -23936,33 +24004,66 @@ webpackJsonp([0,1],[
 	                goodlist:[]
 	            }
 	        },
-	        asyncData:function(resolve, reject){
+	        asyncData: function(resolve, reject) {
 	            var _self = this;
 	
-	            $.ajax({
-	                type: "GET",
-	                url:'../../src/mock/list.json',
-	                dataType:"json",
-	                success :function(data){
+	            _self.getAjax(resolve);
 	
-	                    var json = Mock.mock(data);
+	            _self.$nextTick(function() {
+	                new Swiper(_self.$els.swiper, {
+	                    pagination: '.swiper-pagination',
+	                    paginationClickable: true,
+	                    autoplay:3000,
+	                    loop:true,
+	                    autoplayDisbleOnInteraction:false
 	
-	                    if(json&&json.code==0){
-	
-	                        resolve({
-	                             menu:{
-	                                 list:json.data.menu.list
-	                             },
-	                             banner:json.data.banner,
-	                            goodlist:json.data.goodlist
-	                         });
-	
-	                    }
-	                }
+	                });
 	            });
-	
 	        },
+	       /* route:{
+	            data:function(transition){
+	                var _self = this;
+	
+	
+	
+	                _self.$nextTick(function() {
+	                    new Swiper(_self.$els.swiper, {
+	                        pagination: '.swiper-pagination',
+	                        paginationClickable: true,
+	                        autoplay:3000,
+	                        loop:true,
+	                        autoplayDisbleOnInteraction:false
+	
+	                    });
+	                });
+	            }
+	
+	        },*/
 	        methods: {
+	            getAjax:function(resolve){
+	                $.ajax({
+	                    type: "GET",
+	                    url:'../../src/mock/list.json',
+	                    dataType:"json",
+	                    success :function(data){
+	
+	                        var json = Mock.mock(data);
+	
+	                        if(json&&json.code==0){
+	
+	
+	                            resolve({
+	                                userid:json.data.userid,
+	                                menu:{
+	                                    list:json.data.menu.list
+	                                },
+	                                banner:json.data.banner,
+	                                goodlist:json.data.goodlist
+	                            });
+	                        }
+	                    }
+	                });
+	            },
 	            openMenu:function(){
 	
 	                $("html, body, .page").addClass("scroll-hide");
@@ -23978,100 +24079,13 @@ webpackJsonp([0,1],[
 	            }
 	        },
 	        components:{
-	            "listscroll":__webpack_require__(26),
-	            "bpMenu":__webpack_require__(39)
+	            "bpMenu":__webpack_require__(30)
 	        }
 	    }
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(27)
-	module.exports = __webpack_require__(29)
-	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(38)
-	if (false) {
-	(function () {
-	var hotAPI = require("/Users/dinglei/程序代码/工作/时趣互动/2016/20160316_VueGroup/webapp/node_modules/vue-loader/node_modules/vue-hot-reload-api/index.js")
-	hotAPI.install(require("vue"))
-	if (!hotAPI.compatible) return
-	var id = "-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./listscroll.vue"
-	hotAPI.createRecord(id, module.exports)
-	module.hot.accept(["-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./listscroll.vue","-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./listscroll.vue"], function () {
-	var newOptions = require("-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./listscroll.vue")
-	var newTemplate = require("-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./listscroll.vue")
-	hotAPI.update(id, newOptions, newTemplate)
-	})
-	})()
-	}
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
 /* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(28);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./listscroll.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./listscroll.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(15)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, "", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(30);
-	
-	    var Swiper = __webpack_require__(32);
-	
-	    module.exports = {
-	        replace:true,
-	        props: ["banner","goodlist"],
-	        components:{
-	            "list":__webpack_require__(33)
-	        }
-	
-	    }
-
-/***/ },
-/* 30 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 31 */,
-/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28521,113 +28535,19 @@ webpackJsonp([0,1],[
 
 
 /***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(34)
-	module.exports = __webpack_require__(36)
-	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(37)
-	if (false) {
-	(function () {
-	var hotAPI = require("/Users/dinglei/程序代码/工作/时趣互动/2016/20160316_VueGroup/webapp/node_modules/vue-loader/node_modules/vue-hot-reload-api/index.js")
-	hotAPI.install(require("vue"))
-	if (!hotAPI.compatible) return
-	var id = "-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./list.vue"
-	hotAPI.createRecord(id, module.exports)
-	module.hot.accept(["-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./list.vue","-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./list.vue"], function () {
-	var newOptions = require("-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./list.vue")
-	var newTemplate = require("-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./list.vue")
-	hotAPI.update(id, newOptions, newTemplate)
-	})
-	})()
-	}
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(35);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./list.vue", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./list.vue");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(15)();
-	// imports
-	
-	
-	// module
-	exports.push([module.id, ".page .ui-product:first-child {\n        margin-top: 1rem;\n        display: inline-block;\n    }\n    .ad, .ui-product {\n        position: relative;\n    }\n    .ui-product {\n        width: 100%;\n        font-size: 0;\n        margin-bottom: 1rem;\n    }\n    img {\n        font-size: 0;\n        background-size: contain;\n    }\n    a, button, img {\n        -webkit-touch-callout: none;\n        -webkit-tap-highlight-color: rgba(255,0,0,0);\n    }\n\n    .ui-product .reply span {\n        padding: 0 10px;\n        background: rgba(0,0,0,.7);\n        float: left;\n        height: 3rem;\n    }\n    .ui-product .reply {\n        position: absolute;\n        bottom: 4.5rem;\n        right: 0;\n        color: #fff;\n        font-size: 1.4rem;\n        vertical-align: middle;\n        line-height: 3rem;\n        height: 3rem;\n    }\n    .icon-mark, .icon-mark:after, .ui-box, .ui-product .reply span, .warn-tips, .warn-tips p {\n        display: inline-block;\n    }\n\n    h4, p {\n        font-size: 1.4rem;\n    }\n    .ui-product .reply span:last-child {\n        background: rgba(21,21,21,.75);\n    }\n    .icon-love, .icon-lovefull {\n        font-size: 1.4rem;\n        margin-right: 2px;\n        vertical-align: 1px;\n        color: #fff;\n    }", ""]);
-	
-	// exports
-
-
-/***/ },
-/* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = {
-	        replace:true,
-	        props: ["goodlist"],
-	        watch:{
-	            'banner':function(){
-	                var _self = this;
-	
-	                _self.$nextTick(function() {
-	
-	                    new Swiper(_self.$el, {
-	                        pagination: '.swiper-pagination',
-	                        paginationClickable: true
-	                    });
-	                });
-	            }
-	
-	        },
-	        components:{
-	            "list":__webpack_require__(33)
-	        }
-	
-	    }
-
-/***/ },
-/* 37 */
+/* 28 */
 /***/ function(module, exports) {
 
-	module.exports = "<section id=\"goodsList\">\n\n        <div class=\"ui-product\" v-for=\"item in goodlist\">\n            <img width=\"100%\" :src=\"item.img\">\n            <p class=\"reply\">\n                <span class=\"tit\">{{item.name}}</span>\n                <span class=\"like\">\n                    <i class=\"iconfont icon-love\"></i> {{item.price}}\n                </span>\n            </p>\n        </div>\n\n    </section>";
+	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 38 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"listScroll\">\n        <section>\n\n            <section class=\"carousel ad-banner-crousel\">\n                <!-- Swiper -->\n                <div class=\"swiper-container\" v-el:swiper>\n\n                    <div class=\"swiper-wrapper\">\n                        <img v-for=\"item in banner\" :src=\"item.url\">\n                    </div>\n\n\n                    <!-- Pagination -->\n                    <div class=\"swiper-pagination\"></div>\n                </div>\n            </section>\n\n            <list :goodlist.sync=\"goodlist\"></list>\n\n\n        </section>\n    </div>";
-
-/***/ },
-/* 39 */
+/* 29 */,
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(40)
-	module.exports = __webpack_require__(42)
-	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(43)
+	__webpack_require__(31)
+	module.exports = __webpack_require__(33)
+	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(34)
 	if (false) {
 	(function () {
 	var hotAPI = require("/Users/dinglei/程序代码/工作/时趣互动/2016/20160316_VueGroup/webapp/node_modules/vue-loader/node_modules/vue-hot-reload-api/index.js")
@@ -28644,16 +28564,16 @@ webpackJsonp([0,1],[
 	}
 
 /***/ },
-/* 40 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(41);
+	var content = __webpack_require__(32);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(17)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -28670,10 +28590,10 @@ webpackJsonp([0,1],[
 	}
 
 /***/ },
-/* 41 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(16)();
 	// imports
 	
 	
@@ -28684,7 +28604,7 @@ webpackJsonp([0,1],[
 
 
 /***/ },
-/* 42 */
+/* 33 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -28694,16 +28614,256 @@ webpackJsonp([0,1],[
 	    }
 
 /***/ },
-/* 43 */
+/* 34 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"float-menu iscroll\" :class=\"{'show':show}\">\n        <section id=\"categoryPage\">\n            <h2>商品分类</h2>\n            <section id=\"categoryList\" class=\"ui-box-group cf\">\n                <div class=\"ui-box\" cid=\"{{item.id}}\" v-for=\"item in list\">\n                    <div class=\"ui-box-pic\"><img src=\"http://p.qpic.cn/qqjifen_pic/0/upload_180c7e55ed69d03451934258c6aab7a9/0\" width=\"100%\"></div>\n                    <h3>{{item.id}}</h3>\n                </div>\n            </section>\n        </section>\n    </div>";
 
 /***/ },
+/* 35 */
+/***/ function(module, exports) {
+
+	module.exports = "<div id=\"applist\">\n        <div class=\"page\">\n            <div class=\"page-cover\" v-if=\"menu.show\" @click=\"showMenus\"></div>\n\n            <!--头部-->\n            <header class=\"header\" :class=\"{'show':menu.show}\">\n                <div class=\"item\" @click=\"openMenu\">\n                    <i class=\"iconfont icon-class\"></i>\n                </div>\n            <span style=\"display:none;\" class=\"header-search\">\n                <i class=\"icon-search\"></i>\n                <input class=\"\" placeholder=\"\" value=\"搜积分月有惊喜\">\n            </span>\n                <div class=\"item\">\n            <span class=\"user-center\" v-link=\"{name:'user',params:{userid:userid}}\">\n                <i class=\"iconfont icon-mine\"></i>\n            </span>\n            <span class=\"cart\" v-link=\"{name:'cart'}\">\n                <i class=\"iconfont icon-cart\"></i>\n                <sup>10</sup>\n            </span>\n                </div>\n            </header>\n\n            <!--默认列表-->\n            <div :class=\"{'show':menu.show}\" class=\"listScroll\">\n                <section>\n                    <section class=\"carousel ad-banner-crousel\" style=\"height: 140.625px;\">\n                        <!-- Swiper -->\n                        <div class=\"swiper-container\" v-el:swiper>\n                            <ul class=\"swiper-wrapper\" v-for=\"item in banner\">\n                                <li class=\"swiper-slide\">\n                                    <a>\n                                        <img :src=\"item.url\" :alt=\"item.title\">\n                                    </a>\n                                </li>\n                            </ul>\n\n                        </div>\n                    </section>\n\n                    <section id=\"goodsList\">\n\n                        <a class=\"ui-product\" v-for=\"item in goodlist\" v-link=\"{name:'detail',params:{goodsid:item.goodsid}}\">\n                            <img width=\"100%\" :src=\"item.img\">\n                            <p class=\"reply\">\n                                <span class=\"tit\">{{item.name}}</span>\n                            <span class=\"like\">\n                                <i class=\"iconfont icon-love\"></i> {{item.price}}\n                            </span>\n                            </p>\n                        </a>\n\n                    </section>\n                </section>\n            </div>\n\n        </div>\n\n        <!--左侧菜单栏-->\n        <bp-menu :show.sync=\"menu.show\" :list.sync=\"menu.list\"></bp-menu>\n    </div>";
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(37)
+	module.exports = __webpack_require__(39)
+	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(40)
+	if (false) {
+	(function () {
+	var hotAPI = require("/Users/dinglei/程序代码/工作/时趣互动/2016/20160316_VueGroup/webapp/node_modules/vue-loader/node_modules/vue-hot-reload-api/index.js")
+	hotAPI.install(require("vue"))
+	if (!hotAPI.compatible) return
+	var id = "-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./detail.vue"
+	hotAPI.createRecord(id, module.exports)
+	module.hot.accept(["-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./detail.vue","-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./detail.vue"], function () {
+	var newOptions = require("-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./detail.vue")
+	var newTemplate = require("-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./detail.vue")
+	hotAPI.update(id, newOptions, newTemplate)
+	})
+	})()
+	}
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(38);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(17)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./detail.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./detail.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(16)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".card-page {\n        width: 100%;\n        position:absolute;\n    }\n    .card-inactive {\n        display: none;\n    }\n    .card-active {\n    }\n    .card-no-scroll {\n    }\n    .card-scroll {\n        height: 100%;\n    }\n    .card-scroll .iscroll {\n        overflow: hidden;\n    }\n    .card-scroll .scroll {\n        overflow-y: auto;\n        overflow-x: hidden;\n    }\n    .card-scroll .before-scroll {\n        position: relative;\n        top: 0px;\n    }\n    .card-no-scroll .scroll {\n    }\n    .card-no-scroll header {\n        position: fixed;\n        width: 100%;\n        left: 0px;\n        top: 0px;\n        z-index: 1000;\n    }", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 39 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	        replace:true,
+	        data:function(){
+	              return{
+	                  name:""
+	              }
+	        },
+	        route:{
+	            data:function(transition){
+	                var _self = this;
+	                console.log(transition)
+	                transition.next({
+	                    name:"丁磊"
+	                });
+	            }
+	
+	        }
+	
+	    }
+
+/***/ },
+/* 40 */
+/***/ function(module, exports) {
+
+	module.exports = "<div id=\"appdetal\"></div>";
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(42)
+	module.exports = __webpack_require__(44)
+	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(45)
+	if (false) {
+	(function () {
+	var hotAPI = require("/Users/dinglei/程序代码/工作/时趣互动/2016/20160316_VueGroup/webapp/node_modules/vue-loader/node_modules/vue-hot-reload-api/index.js")
+	hotAPI.install(require("vue"))
+	if (!hotAPI.compatible) return
+	var id = "-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./cart.vue"
+	hotAPI.createRecord(id, module.exports)
+	module.hot.accept(["-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./cart.vue","-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./cart.vue"], function () {
+	var newOptions = require("-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./cart.vue")
+	var newTemplate = require("-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./cart.vue")
+	hotAPI.update(id, newOptions, newTemplate)
+	})
+	})()
+	}
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(43);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(17)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./cart.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./cart.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(16)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".box-bar, .box-more, .box-row, .layout-box-bottom {\n        padding: 15px;\n    }\n    .f-thin, del {\n        color: #8e8e8e;\n    }\n    h4, p {\n        font-size: 1.4rem;\n    }\n    .page-pay-cart .layout-box {\n        margin: 0 15px;\n        border-radius: 5px;\n    }\n    .c-border, .layout-box {\n        background-image: -webkit-linear-gradient(top,transparent,transparent 50%,#2f3237 50%,#2f3237 100%),-webkit-linear-gradient(top,transparent,transparent 50%,#2f3237 50%,#2f3237 100%);\n        background-position: 0 top,0 bottom;\n        background-size: 100% 1px,100% 1px;\n        background-repeat: no-repeat,no-repeat;\n        -webkit-transform: translateZ(0);\n    }\n    .layout-box {\n        margin-bottom: 15px;\n        background-color: #212427;\n    }\n    .flex-between, .fx-between {\n        display: -webkit-box;\n        display: -webkit-flex;\n        display: flex;\n        -webkit-justify-content: space-between;\n        -webkit-box-pack: justify;\n    }\n    .layout-box-top {\n        background: #24282b;\n        border-bottom: 1px solid #1c1d20;\n        padding: 10px;\n    }\n    .box-bar, .box-more, .box-row, .layout-box-bottom {\n        padding: 15px;\n    }\n    .cart-fn {\n        position: relative;\n    }\n    .cart-fn h6 {\n        width: 30%;\n        overflow: hidden;\n        white-space: nowrap;\n        font-size: 1.4rem;\n        text-overflow: ellipsis;\n        color: #8e8e8e;\n        position: absolute;\n        left: 10px;\n        top: 10px;\n    }\n    .cart-fn .right {\n        width: 100%;\n    }\n\n    .flex-between button {\n        margin-right: 10px;\n        flex: 1;\n        -webkit-flex: 1;\n        -webkit-box-flex: 1;\n    }\n    .cart-fn button {\n        height: 40px;\n        font-size: 1.6rem;\n        float: right;\n        margin-right: 0;\n        min-width: 6rem;\n    }\n    .btn-buy, .btn-green, .btn-primary, .btn-primary-line, .btn-red, .btn-thin, .btn-thin-line {\n        border: none;\n        height: 32px;\n        line-height: 28px;\n        border-radius: 4px;\n        font-size: 1.4rem;\n        padding: 0 10px;\n        min-width: 80px;\n        text-align: center;\n    }\n    .btn-green {\n        background: #35c367;\n        color: #fff;\n    }\n    .cart-fn .total {\n        float: right;\n        margin-right: 10px;\n    }\n    .fz-s {\n        font-size: 1.2rem;\n    }\n    .f-thin, del {\n        color: #8e8e8e;\n    }\n\n    .page-pay-cart .c-border-up, .page-pay-cart .discout, .page-pay-cart .layout-box-cont {\n        background-image: -webkit-linear-gradient(top,transparent,transparent 50%,#383b41 50%,#383b41 100%);\n        background-position: 0 top;\n        background-size: 100% 1px;\n        background-repeat: no-repeat;\n        -webkit-transform: translateZ(0);\n    }\n    .page-pay-cart .layout-box-cont {\n        margin-left: 0;\n    }\n    .ui-g-box {\n        clear: both;\n        color: #8e8e8e;\n        display: block;\n        position: relative;\n    }\n    .layout-box-cont {\n        margin-left: 15px;\n        padding: 15px 15px 15px 0;\n    }\n    .c-border-up, .discout, .layout-box .jifen-bar, .layout-box-cont {\n        background-position: 0 top;\n        background-repeat: no-repeat;\n        -webkit-transform: translateZ(0);\n    }\n    .c-border-bm, .c-border-up, .discout, .layout-box .jifen-bar, .layout-box-cont, .tit-summary, .ui-box-list li {\n        background-image: -webkit-linear-gradient(top,transparent,transparent 50%,#2f3237 50%,#2f3237 100%);\n        background-size: 100% 1px;\n    }\n    .ui-g-select {\n        padding-left: 4.5rem;\n    }\n    .add-tap:after, .add-tap:before, .icon-mark:after, .ui-g-box:after, .ui-pic-list:after, .ui-pic-list:before {\n        content: \"\";\n    }\n    .ui-g-box:after {\n        display: table;\n        clear: both;\n        zoom: 1;\n    }\n    .ui-g-select .radio {\n        position: absolute;\n        width: 20px;\n        height: 20px;\n        top: 32%;\n        left: 12px;\n        margin-top: -10px;\n    }\n    .radio i {\n        font-size: 24px;\n        color: grey;\n    }\n    .icon-iconfontround:before {\n        content: \"\\E622\";\n    }\n    .ui-g-pic {\n        width: 8.4rem;\n        height: 8.4rem;\n        overflow: hidden;\n        float: left;\n        margin-right: 1rem;\n    }\n    .ui-g-pic img {\n        width: 100%;\n    }\n    .ui-g-info {\n        min-height: 8.4rem;\n        position: relative;\n    }\n    .ui-g-info, .ui-g-info h3 {\n        line-height: 2rem;\n    }\n    .flex-between, .fx-between {\n        display: -webkit-box;\n        display: -webkit-flex;\n        display: flex;\n        -webkit-justify-content: space-between;\n        -webkit-box-pack: justify;\n    }\n    .ui-g-info .flex-between h3 {\n        width: 70%;\n        overflow: hidden;\n        white-space: nowrap;\n        font-size: 1.4rem;\n        text-overflow: ellipsis;\n    }\n    .ui-g-info .price, .ui-g-info h3 {\n        color: #fff;\n        margin-bottom: 2px;\n        font-size: 1.4rem;\n    }\n    .ui-g-info, .ui-g-info h3 {\n        line-height: 2rem;\n    }\n    .price {\n        color: #000;\n    }\n    .ui-g-info .ui-duration {\n        width: 40%;\n        position: absolute;\n        right: 0;\n        bottom: 0;\n    }\n\n\n\n    .ui-duration {\n        position: relative;\n        border: 1px solid #e8e8e8;\n        height: 3.2rem;\n        background-color: #f8faf9;\n        border-radius: 6px;\n        -webkit-box-sizing: border-box;\n    }\n    .ui-duration a:first-child {\n        top: 0;\n        left: 0;\n        border-right: 1px solid #e8e8e8;\n        border-radius: 5px 0 0 5px;\n    }\n    .pop-box, .ui-duration a {\n        position: absolute;\n    }\n    .ui-duration a {\n        display: inline-block;\n        background-color: #f7f7f7;\n        text-align: center;\n        height: 3rem;\n        line-height: 2.6rem;\n        width: 3rem;\n        overflow: hidden;\n        vertical-align: middle;\n        color: #cbcbcb;\n        z-index: 3;\n        border-radius: 5px;\n        box-sizing: border-box;\n    }\n    .ui-duration a:last-child {\n        top: 0;\n        right: 0;\n        border-left: 1px solid #e8e8e8;\n        border-radius: 0 5px 5px 0;\n    }\n    .duration-gray a {\n        background-color: #2c3033;\n        color: #5b5e61;\n    }\n    .duration-gray, .duration-gray a:first-child, .duration-gray a:last-child {\n        border-color: #212325;\n    }\n    .duration-gray {\n        background-color: #2a2d32;\n    }\n    .ui-duration a span {\n        height: 16px;\n        width: 16px;\n        display: block;\n        line-height: 16px;\n        margin: 8px auto 0;\n        font-size: 2.4rem;\n    }\n    .dur-ipt {\n        margin: 0 3.2rem;\n        display: block;\n    }\n    .ui-duration input {\n        -webkit-box-sizing: border-box;\n        box-sizing: border-box;\n        text-align: center;\n        color: #333;\n        padding: 0;\n        display: block;\n        height: 3rem;\n        width: 100%;\n        font-size: 15px;\n    }\n    .duration-gray input {\n        color: #b3b3b3;\n        width: 70%;\n        position: absolute;\n        left: 50%;\n        margin-left: -35%;\n    }\n\n\n    .cart-del {\n        position: absolute;\n        bottom: 5px;\n        right: 45%;\n    }\n    .cart-del i {\n        font-size: 18px;\n        color: #6b6d71;\n    }\n    .icon-delete:before {\n        content: \"\\E61C\";\n    }\n    .page-pay-cart .discout {\n        margin-top: 1.5rem;\n        padding-top: 1.3rem;\n    }\n    .f-em {\n        color: #45c674;\n    }\n    .switch-off, .switch-on {\n        width: 50px;\n        height: 20px;\n        border-radius: 18px;\n        display: inline-block;\n        background-color: #22b93c;\n        position: relative;\n    }\n    .switch-on i {\n        right: 0;\n    }\n    .switch-off i, .switch-on i {\n        width: 24px;\n        height: 24px;\n        display: block;\n        background-color: #f2f2f2;\n        border-radius: 100%;\n        position: absolute;\n        top: -2px;\n    }\n    .box-more {\n        text-align: center;\n        color: #878787;\n    }", ""]);
+	
+	// exports
+
+
+/***/ },
 /* 44 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"page\">\n        <div class=\"page-cover\" v-if=\"menu.show\" @click=\"showMenus\"></div>\n\n        <!--头部-->\n        <header class=\"header\" :class=\"{'show':menu.show}\">\n            <div class=\"item\" @click=\"openMenu\">\n                <i class=\"iconfont icon-class\"></i>\n            </div>\n        <span style=\"display:none;\" class=\"header-search\">\n            <i class=\"icon-search\"></i>\n            <input class=\"\" placeholder=\"\" value=\"搜积分月有惊喜\">\n        </span>\n            <div class=\"item\">\n            <span class=\"user-center\">\n                <i class=\"iconfont icon-mine\"></i>\n            </span>\n            <span class=\"cart\">\n                <i class=\"iconfont icon-cart\"></i>\n                <sup>10</sup>\n            </span>\n            </div>\n        </header>\n\n        <!--默认列表-->\n        <!--<div class=\"listScroll\" :class=\"{'show':menu.show}\">\n            <section>\n                <section class=\"carousel ad-banner-crousel\">\n\n                </section>\n            </section>\n        </div>-->\n\n        <listscroll :class=\"{'show':menu.show}\" :banner.sync=\"banner\" :goodlist.sync=\"goodlist\"></listscroll>\n\n\n    </div>\n\n    <!--左侧菜单栏-->\n    <bp-menu :show.sync=\"menu.show\" :list.sync=\"menu.list\"></bp-menu>";
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports) {
+
+	module.exports = "<section id=\"cartScroll\" class=\"wrap-card iscroll\">\n        <section class=\"page-pay-cart\" style=\"transition: transform 0ms cubic-bezier(0.33, 0.66, 0.66, 1); -webkit-transition: transform 0ms cubic-bezier(0.33, 0.66, 0.66, 1); transform-origin: 0px 0px; transform: translate(0px, 0px) translateZ(0px);\">\n            <p class=\"box-row f-thin\">可用积分：0</p><section class=\"layout-box level\" number=\"1\">\n            <div class=\"layout-box-top flex-between box-row cart-fn\">\n                <h6> 鲜橙公司</h6>\n                <div class=\"right \">\n                    <button _module=\"cartBuySubmitBtn\" id=\"cartBuySubmit_2\" type=\"button\" class=\"btn-green\">结算</button>\n                    <div class=\"total\">\n                        <p id=\"cartTotalFee_2\">￥0.00</p>\n                        <p id=\"offInfo_2\" class=\" fz-s\">\n                            <span class=\"f-thin\">共0件</span>（减0元）\n                        </p>\n                    </div>\n                </div>\n            </div>\n            <div class=\"layout-box-cont ui-g-box\">\n                <div class=\"ui-g-select\">\n                    <div class=\"radio\">\n                        <i id=\"icon_cartRadio_2_1627\" class=\"iconfont icon-iconfontround\" jifenflag=\"0\"></i>\n                        <!--默认iconfontround-->\n                    </div>\n                    <div class=\"ui-g-pic\">\n                        <img src=\"http://p.qpic.cn/qqjifen_pic/0/upload_ca2df3725b5f8eca673d6cb9b03804b4/0\" width=\"100%\"></div>\n                    <div class=\"ui-g-info \">\n                        <div class=\"flex-between\">\n                            <h3>QQfamily儿童卡通背包</h3>\n                            <span class=\"price\">￥88</span>\n                        </div>\n                        <p class=\"f-thin\">family儿童书包&nbsp;&nbsp;</p>\n                        <div class=\"ui-duration duration-gray\">\n                            <a _module=\"cartMinus\" href=\"javascript:void 0;\">\n                                <span>-</span>\n                            </a>\n                            <div class=\"dur-ipt \">\n                                <input disabled=\"\" type=\"text\" value=\"1\">\n                            </div>\n                            <a _module=\"cartAdd\" href=\"javascript:void 0;\">\n                                <span>+</span>\n                            </a>\n                        </div>\n                        <span id=\"cartDelete_2_1627\" class=\"cart-del\" sku_id=\"1627\" _module=\"cartDelete\">\n                            <i class=\"iconfont icon-delete\"></i>\n                        </span>\n                    </div>\n                    <!--积分区-->\n                    <div class=\"discout flex-between\">\n                        <p id=\"switchp_cartRadio_2_1627\" class=\"f-em\">抵扣：10积分减3元</p>\n                        <div _module=\"cartSwitch\" id=\"switchdiv_cartRadio_2_1627\" class=\"switch-on\">\n                            <i></i>\n                        </div>\n                    </div>\n                    <!--积分区  end-->\n                </div>\n            </div>\n            <div class=\"box-more c-border-up\" style=\"display:none;\">\n                全部商品\n                <i class=\"iconfont icon-ar-downthin\"></i>\n            </div>\n        </section>\n        </section>\n    </section>";
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(47)
+	module.exports = __webpack_require__(49)
+	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(50)
+	if (false) {
+	(function () {
+	var hotAPI = require("/Users/dinglei/程序代码/工作/时趣互动/2016/20160316_VueGroup/webapp/node_modules/vue-loader/node_modules/vue-hot-reload-api/index.js")
+	hotAPI.install(require("vue"))
+	if (!hotAPI.compatible) return
+	var id = "-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./user.vue"
+	hotAPI.createRecord(id, module.exports)
+	module.hot.accept(["-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./user.vue","-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./user.vue"], function () {
+	var newOptions = require("-!./../../node_modules/vue-loader/lib/selector.js?type=script&index=0!./user.vue")
+	var newTemplate = require("-!vue-html!./../../node_modules/vue-loader/lib/selector.js?type=template&index=0!./user.vue")
+	hotAPI.update(id, newOptions, newTemplate)
+	})
+	})()
+	}
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(48);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(17)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./user.vue", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./user.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(16)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".my-photo {\n        position: relative;\n        height: 130px;\n        padding-top: 30px;\n        line-height: 24px;\n        background-image: url(//imgcache.gtimg.cn/bossweb/jifen/mobile/images/public/my_photo_bg.jpg);\n        background-size: 100% auto;\n        background-repeat: no-repeat;\n    }\n    .my-photo .pic {\n        float: left;\n        margin: 0 1.5rem;\n        width: 6.2rem;\n        height: 6.2rem;\n        border-radius: 100%;\n        overflow: hidden;\n        border: 3px solid #303031;\n        background: #303031;\n        text-align: center;\n    }\n    .my-photo p {\n        margin-left: 9rem;\n    }\n    .my-name {\n        margin-top: 8px;\n        font-size: 1.6rem;\n    }\n    h4, p {\n        font-size: 1.4rem;\n    }\n    .f-thin, del {\n        color: #8e8e8e;\n    }\n    .ui-box-list {\n        background-color: #212427;\n    }\n    .c-border-bm, .tit-summary, .ui-box-list li {\n        background-position: 0 bottom;\n        background-repeat: no-repeat;\n        -webkit-transform: translateZ(0);\n    }\n    .c-border-bm, .c-border-up, .discout, .layout-box .jifen-bar, .layout-box-cont, .tit-summary, .ui-box-list li {\n        background-image: -webkit-linear-gradient(top,transparent,transparent 50%,#2f3237 50%,#2f3237 100%);\n        background-size: 100% 1px;\n    }\n    .ui-box-list li {\n        margin-left: 15px;\n        font-size: 14px;\n        position: relative;\n        padding: 16px 15px 16px 0;\n        display: -webkit-box;\n        display: -webkit-flex;\n        display: flex;\n        -webkit-justify-content: space-between;\n        -webkit-box-pack: justify;\n    }\n\n\n    .ui-box-list li label {\n        font-size: 1.6rem;\n    }\n    .ui-box-list li label span {\n        position: absolute;\n        top: 50%;\n        right: 3rem;\n        -webkit-transform: translate(0,-50%);\n        transform: translate(0,-50%);\n        color: #888;\n        font-size: 1.2rem;\n        line-height: 100%;\n    }\n    .ui-box-list li .icon-arrow {\n        width: 16px;\n        position: absolute;\n        top: 50%;\n        -webkit-transform: translate(0,-50%);\n        transform: translate(0,-50%);\n        right: 1.5rem;\n    }\n\n    .ui-box-list li i {\n        width: 24px;\n        height: 24px;\n        display: inline-block;\n        font-size: 24px;\n        line-height: 24px;\n    }\n\n    .icon-arrow:before {\n        content: \"\\E601\";\n    }\n\n    .icon-arrow {\n        font-size: 2.4rem;\n        color: #5c5d5e;\n        line-height: 2.2rem;\n    }\n    .iconfont, .rule span {\n        font-size: 1.2rem;\n    }\n\n    .ui-box-list li:last-child {\n        border: none;\n        background-image: none;\n    }\n    .ui-box-list .pay-info-box {\n        margin-left: 0;\n        padding: 5px 0;\n    }\n    .pay-info {\n        width: 100%;\n        background-color: #212427;\n        display: -webkit-box;\n        display: -webkit-flex;\n        display: flex;\n        -webkit-box-pack: justify;\n        -webkit-flex-align: center;\n        -webkit-align-items: center;\n    }\n    .orders-list ul, .pay-info {\n        -webkit-justify-content: space-between;\n    }\n    .pay-info .item {\n        text-align: center;\n        flex: 1;\n        -webkit-flex: 1;\n        -webkit-box-flex: 1;\n        width: 100%;\n        display: block;\n    }\n    .pay-info span {\n        height: 3rem;\n        position: relative;\n    }\n    .pay-info .iconfont {\n        font-size: 30px;\n        display: inline;\n        line-height: 4rem;\n    }\n    .ui-box-list li i {\n        width: 24px;\n        height: 24px;\n        display: inline-block;\n        font-size: 24px;\n        line-height: 24px;\n    }\n    .icon-clock2:before {\n        content: \"\\E625\";\n    }\n    .pay-info .tag {\n        position: absolute;\n        right: -10px;\n        top: -8px;\n        width: auto;\n        height: auto;\n        background-color: #5be991;\n        border-radius: 14px;\n        color: #000;\n        padding: 2px 5px;\n        font-size: 1.2rem;\n        line-height: 1.2rem;\n    }\n    .pay-info .item p {\n        color: #a3a3a3;\n    }\n    .ui-box-list li p {\n        margin-bottom: 5px;\n    }\n    .my-center {\n        margin-bottom: 15px;\n    }\n    .my-center .ui-box-list {\n        margin-top: 15px;\n    }\n    .ui-box-list {\n        background-color: #212427;\n    }\n    .ui-box-list li label .f-thin {\n        padding: 2px 5px;\n        color: #2d2d2d;\n        text-align: center;\n        background-color: #5be991;\n        border-radius: 14px;\n    }\n    .rule {\n        padding: 0 1.5rem 1.5rem;\n        text-align: right;\n        color: #8e8e8e;\n    }\n    .rule .iconfont {\n        vertical-align: baseline;\n    }\n    .iconfont, .rule span {\n        font-size: 1.2rem;\n    }", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports) {
+
+
+
+/***/ },
+/* 50 */
+/***/ function(module, exports) {
+
+	module.exports = "<div id=\"accountScroll\" class=\"wrap iscroll\" style=\"overflow: hidden; height: 667px;\">\n        <div style=\"transition: transform 0ms cubic-bezier(0.33, 0.66, 0.66, 1); -webkit-transition: transform 0ms cubic-bezier(0.33, 0.66, 0.66, 1); transform-origin: 0px 0px; transform: translate(0px, 0px) translateZ(0px);\">\n            <section class=\"my-photo\">\n                <div class=\"pic\"><img src=\"http://qlogo4.store.qq.com/qzone/375074900/375074900/50\" width=\"100%\"></div>\n                <p class=\"my-name\"><span class=\"f-thin\"></span></p>\n                <p class=\"f-thin\" account=\"qq\">QQ:375074900</p>\n                <p id=\"account_jifen_balance\" account=\"balance\" class=\"f-thin\">积分：0</p>\n                <p id=\"account_jifen_login\" class=\"f-thin\" style=\"display: none;\">积分：未登录</p>\n            </section>\n            <section class=\"order\">\n                <ul class=\"ui-box-list\">\n                    <li>\n                        <label>我的订单 <a href=\"javascript:void 0;\"><span id=\"orderAll\" style=\"display: none;\">查看全部订单</span></a></label>\n                        <i class=\"iconfont icon-arrow\"></i>\n                    </li>\n                    <li class=\"pay-info-box\">\n                        <section id=\"orderQuery\" class=\"pay-info\">\n                            <div class=\"item\" _module=\"pay\" number=\"0\">\n                                <span> <i class=\"iconfont icon-clock2\"></i><i _number=\"account_pay_number\" class=\"tag\">0</i></span>\n                                <p>待付款</p>\n                            </div>\n                            <div class=\"item\" _module=\"paid\" number=\"0\">\n                                <span> <i class=\"iconfont icon-daishouhuo2\"></i><i class=\"tag\">0</i></span>\n                                <p>已付款</p>\n                            </div>\n                            <div class=\"item\" _module=\"over\" number=\"0\">\n                                <span> <i class=\"iconfont icon-arrowbtline2\"></i><i class=\"tag\">0</i></span>\n                                <p>已发货</p>\n                            </div>\n                            <div class=\"item\" style=\"display: none;\">\n                                <span> <i class=\"iconfont icon-roundcheck2\"></i><i class=\"tag\">0</i></span>\n                                <p>已完成</p>\n                            </div>\n                        </section>\n                    </li>\n                </ul>\n            </section>\n            <section class=\"my-center\">\n                <ul class=\"ui-box-list\">\n                    <li id=\"shoppingCart\">\n                        <label>我的购物车<span class=\"f-thin\" account=\"cart\">1</span></label>\n                        <i class=\"iconfont icon-arrow\"></i>\n                    </li>\n                    <li id=\"likeQuery\">\n                        <label>我的收藏</label>\n                        <i class=\"iconfont icon-arrow\"></i>\n                    </li>\n                    <li id=\"addressQuery\">\n                        <label>收货地址</label>\n                        <i class=\"iconfont icon-arrow\"></i>\n                    </li>\n                </ul>\n            </section>\n            <div class=\"rule\" style=\"display: none;\"><i class=\"iconfont icon-question2\"></i> 积分获取规则</div>\n        </div>\n    </div>";
 
 /***/ }
 ]);

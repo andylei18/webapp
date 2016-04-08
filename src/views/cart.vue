@@ -146,7 +146,13 @@
         font-size: 24px;
         color: grey;
     }
-    .icon-iconfontround:before {
+    .iconRight:before {
+        content: "\e605";
+    }
+    .radio .iconRight{
+        color: #5be991;
+    }
+    .iconIconfontround:before {
         content: "\e622";
     }
     .ui-g-pic {
@@ -326,60 +332,64 @@
 
 <template>
 
-    <section id="cartScroll" class="wrap-card iscroll">
-        <section class="page-pay-cart" style="transition: transform 0ms cubic-bezier(0.33, 0.66, 0.66, 1); -webkit-transition: transform 0ms cubic-bezier(0.33, 0.66, 0.66, 1); transform-origin: 0px 0px; transform: translate(0px, 0px) translateZ(0px);">
+    <section id="cartScroll" class="wrap-card">
+        <section class="page-pay-cart">
             <p class="box-row f-thin">可用积分：0</p><section class="layout-box level" number="1">
             <div class="layout-box-top flex-between box-row cart-fn">
-                <h6> 鲜橙公司</h6>
+                <h6> 时趣互动 </h6>
                 <div class="right ">
                     <button _module="cartBuySubmitBtn" id="cartBuySubmit_2" type="button" class="btn-green">结算</button>
                     <div class="total">
-                        <p id="cartTotalFee_2">￥0.00</p>
-                        <p id="offInfo_2" class=" fz-s">
-                            <span class="f-thin">共0件</span>（减0元）
+                        <p>￥{{totalprice}}</p>
+                        <p class="fz-s">
+                            <span class="f-thin">共{{}}件</span>（减0元）
                         </p>
                     </div>
                 </div>
             </div>
-            <div class="layout-box-cont ui-g-box">
+
+
+            <div class="layout-box-cont ui-g-box" v-for="item in list">
                 <div class="ui-g-select">
-                    <div class="radio">
-                        <i id="icon_cartRadio_2_1627" class="iconfont icon-iconfontround" jifenflag="0"></i>
+                    <div class="radio" @click="choice(item)">
+                        <i class="iconfont" :class="item.ckclass"></i>
                         <!--默认iconfontround-->
                     </div>
                     <div class="ui-g-pic">
-                        <img src="http://p.qpic.cn/qqjifen_pic/0/upload_ca2df3725b5f8eca673d6cb9b03804b4/0" width="100%"></div>
+                        <img :src="item.img" width="100%"></div>
                     <div class="ui-g-info ">
                         <div class="flex-between">
-                            <h3>QQfamily儿童卡通背包</h3>
-                            <span class="price">￥88</span>
+                            <h3>{{item.name}}</h3>
+                            <span class="price">￥{{item.price}}</span>
                         </div>
-                        <p class="f-thin">family儿童书包&nbsp;&nbsp;</p>
+                        <p class="f-thin">{{item.name}}&nbsp;&nbsp;</p>
                         <div class="ui-duration duration-gray">
-                            <a _module="cartMinus" href="javascript:void 0;">
+                            <a href="javascript:void 0;" @click="calculation(0,item)">
                                 <span>-</span>
                             </a>
                             <div class="dur-ipt ">
-                                <input disabled="" type="text" value="1">
+                                <input disabled="" type="text" :value="item.numbers" v-model="item.numbers">
                             </div>
-                            <a _module="cartAdd" href="javascript:void 0;">
+                            <a href="javascript:void 0;" @click="calculation(1,item)">
                                 <span>+</span>
                             </a>
                         </div>
-                        <span id="cartDelete_2_1627" class="cart-del" sku_id="1627" _module="cartDelete">
+                        <span class="cart-del">
                             <i class="iconfont icon-delete"></i>
                         </span>
                     </div>
                     <!--积分区-->
                     <div class="discout flex-between">
-                        <p id="switchp_cartRadio_2_1627" class="f-em">抵扣：10积分减3元</p>
-                        <div _module="cartSwitch" id="switchdiv_cartRadio_2_1627" class="switch-on">
+                        <p class="f-em">{{item.discountname}}</p>
+                        <div class="switch-on">
                             <i></i>
                         </div>
                     </div>
                     <!--积分区  end-->
                 </div>
             </div>
+
+
             <div class="box-more c-border-up" style="display:none;">
                 全部商品
                 <i class="iconfont icon-ar-downthin"></i>
@@ -391,5 +401,100 @@
 </template>
 
 <script>
+    module.exports = {
+        data:function(){
+            return{
+                totalprice:0,
+                total:0,
+                list:[]
+            }
+        },
+        route:{
+             data:function(transition){
+                 var _self = this;
 
+                 _self.getAjaxData(transition);
+
+             }
+        },
+        watch:{
+           'list':function(val,oldval){
+
+              this.total = val.length;
+
+              for(var i = 0;i < val.length; i++) {
+
+                  if(val[i].ck){
+                      console.log(i)
+                      val[i].ckclass ="iconRight";
+
+                  }else{
+
+                      val[i].ckclass="iconIconfontround";
+                  }
+
+
+              }
+           }
+        },
+        methods: {
+            //请求当前用户购物车数据
+            getAjaxData:function(transition){
+                $.ajax({
+                    type: "GET",
+                    url:'../../src/mock/cart.json',
+                    dataType:"json",
+                    success :function(json){
+
+                        if(json&&json.code==0){
+
+                            transition.next({
+
+                                list:json.data.cartlist
+
+                            });
+
+                        }
+                    }
+                });
+
+            },
+            //选中和取消当前礼品
+            choice:function(obj){
+
+                if(obj.ckclass == "iconRight"){
+
+                    obj.ckclass = "iconIconfontround";
+
+                    obj.ck = false;
+
+                }else{
+
+                    obj.ckclass = "iconRight";
+
+                    obj.ck = true;
+                }
+
+            },
+            //计算礼品数量
+            calculation:function(num,obj){
+
+                if(num == 0){
+
+                    if(obj.numbers > 1){
+
+                        obj.numbers = parseInt(obj.numbers) - 1;
+
+                    }
+
+                }else{
+
+                    obj.numbers = parseInt(obj.numbers) + 1;
+
+                }
+
+
+            }
+        }
+    }
 </script>

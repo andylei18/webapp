@@ -31,8 +31,14 @@ var router = new VueRouter({
     linkActiveClass:'nav-active' //全局设置连接匹配时的类名 参考http://vuejs.github.io/vue-router/en/link.html
 });
 
-//登录中间验证，页面需要登录而没有登录的情况直接跳转登录
+//默认/重定向到home页
+/*
+router.redirect({
+    '/list':""
+});
+*/
 
+//登录中间验证，页面需要登录而没有登录的情况直接跳转登录
 window.routeList=[];
 
 router.beforeEach(function (transition) {
