@@ -333,6 +333,10 @@
 <template>
 
     <section id="cartScroll" class="wrap-card">
+
+        <!--加载框-->
+        <loading :show="loading.show"></loading>
+
         <section class="page-pay-cart">
             <p class="box-row f-thin">可用积分：0</p><section class="layout-box level" number="1">
             <div class="layout-box-top flex-between box-row cart-fn">
@@ -340,9 +344,9 @@
                 <div class="right ">
                     <button _module="cartBuySubmitBtn" id="cartBuySubmit_2" type="button" class="btn-green">结算</button>
                     <div class="total">
-                        <p>￥{{totalprice}}</p>
+                        <p>{{totalprice| currency '￥'}}</p>
                         <p class="fz-s">
-                            <span class="f-thin">共{{}}件</span>（减0元）
+                            <span class="f-thin">共{{total}}件</span>（减0元）
                         </p>
                     </div>
                 </div>
@@ -352,7 +356,7 @@
             <div class="layout-box-cont ui-g-box" v-for="item in list">
                 <div class="ui-g-select">
                     <div class="radio" @click="choice(item)">
-                        <i class="iconfont" :class="item.ckclass"></i>
+                        <i class="iconfont" :class="item.ck?'iconRight':'iconIconfontround'"></i>
                         <!--默认iconfontround-->
                     </div>
                     <div class="ui-g-pic">
@@ -360,7 +364,7 @@
                     <div class="ui-g-info ">
                         <div class="flex-between">
                             <h3>{{item.name}}</h3>
-                            <span class="price">￥{{item.price}}</span>
+                            <span class="price">￥{{item.price }}</span>
                         </div>
                         <p class="f-thin">{{item.name}}&nbsp;&nbsp;</p>
                         <div class="ui-duration duration-gray">
@@ -374,7 +378,7 @@
                                 <span>+</span>
                             </a>
                         </div>
-                        <span class="cart-del">
+                        <span class="cart-del" @click="delEvent(item.id)">
                             <i class="iconfont icon-delete"></i>
                         </span>
                     </div>
@@ -404,9 +408,14 @@
     module.exports = {
         data:function(){
             return{
-                totalprice:0,
+                userid:"110",
+                totalprice:"0",
                 total:0,
-                list:[]
+                list:[],
+                loading:{
+                    show:false,
+                    txt:""
+                }
             }
         },
         route:{
@@ -417,32 +426,17 @@
 
              }
         },
-        watch:{
-           'list':function(val,oldval){
-
-              this.total = val.length;
-
-              for(var i = 0;i < val.length; i++) {
-
-                  if(val[i].ck){
-                      console.log(i)
-                      val[i].ckclass ="iconRight";
-
-                  }else{
-
-                      val[i].ckclass="iconIconfontround";
-                  }
-
-
-              }
-           }
-        },
         methods: {
             //请求当前用户购物车数据
             getAjaxData:function(transition){
+                var _self = this;
+
                 $.ajax({
                     type: "GET",
                     url:'../../src/mock/cart.json',
+                    data:{
+                        userid:_self.userid
+                    },
                     dataType:"json",
                     success :function(json){
 
@@ -462,22 +456,31 @@
             //选中和取消当前礼品
             choice:function(obj){
 
-                if(obj.ckclass == "iconRight"){
+                var _self = this;
 
-                    obj.ckclass = "iconIconfontround";
+                if(obj.ck){
 
                     obj.ck = false;
 
+                    _self.total = parseInt(_self.total) - 1;
+
+                    _self.totalprice = parseInt(_self.totalprice) - obj.price * obj.numbers;
+
                 }else{
 
-                    obj.ckclass = "iconRight";
-
                     obj.ck = true;
+
+                    _self.total = parseInt(_self.total) + 1;
+
+                    _self.totalprice = parseInt(_self.totalprice) + obj.price * obj.numbers;
+
                 }
 
             },
             //计算礼品数量
             calculation:function(num,obj){
+
+                var _self = this;
 
                 if(num == 0){
 
@@ -485,16 +488,50 @@
 
                         obj.numbers = parseInt(obj.numbers) - 1;
 
+                        _self.totalprice = parseInt(_self.totalprice) - obj.price;
+
                     }
 
                 }else{
 
                     obj.numbers = parseInt(obj.numbers) + 1;
 
+                    _self.totalprice = parseInt(_self.totalprice) + obj.price;
+
                 }
 
 
+            },
+            //删除当前礼品
+            delEvent:function(id){
+                var _self = this;
+
+                $.ajax({
+                    type: "GET",
+                    url:'../../src/mock/cart.json',
+                    data:{
+                        userid:_self.userid,
+                        ecid:id
+                    },
+                    dataType:"json",
+                    before:function(){
+                        _self.loading.show = true;
+                    },
+                    success :function(json){
+
+                        _self.loading.show = false;
+
+                        if(json&&json.code==0){
+
+                            this.list = json.data.cartlist
+
+                        }
+                    }
+                });
             }
+        },
+        components:{
+            "loading":require('./../components/loading.vue')
         }
     }
 </script>
