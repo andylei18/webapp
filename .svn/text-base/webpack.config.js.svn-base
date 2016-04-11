@@ -58,7 +58,11 @@ var plugins = [
             console.log('版本是：'+JSON.stringify(stats.toJson().hash));
             return fs.writeFileSync('build/assets.json', content);
         });
-    }
+    },
+    // 使用 ProvidePlugin 加载使用率高的依赖库
+    new webpack.ProvidePlugin({
+        $: 'webpack-zepto'
+    })
 ];
 
 //发布编译时，压缩，版本控制

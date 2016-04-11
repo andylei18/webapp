@@ -2,11 +2,25 @@
     .card-scroll .iscroll {
         overflow: hidden;
     }
+    .float-menu.show{
+        -webkit-transform: translateX(300px);
+        transform: translateX(300px);
+
+        -webkit-transition: all .3s ease;
+        transition: all .3s ease;
+    }
     .slide-on .float-menu {
         -webkit-animation: slider2 .2s linear forwards;
         width: 25rem;
     }
-    @-webkit-keyframes slider2{0%{-webkit-transform:translate3d(-25rem,0,0)}100%{-webkit-transform:translate3d(0,0,0)}}
+    @-webkit-keyframes slider2{
+        0%{
+            -webkit-transform:translate3d(-25rem,0,0)
+        }
+        100%{
+            -webkit-transform:translate3d(0,0,0)
+        }
+    }
     .slide-off .float-menu, .slide-on .float-menu, .slide-on .mask {
         display: block;
     }
@@ -14,14 +28,25 @@
         display: none;
     }
     .float-menu {
-        background: #ebebeb;
+        /*background: #ebebeb;
         height: 100%;
         display: block;
         color: #4a4a4a;
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 100;
+        z-index: 100;*/
+
+        position: absolute;
+        top: 0;
+        left: -300px;
+        width: 300px;
+        background-color: #ebebeb;
+        color: #313131;
+        -webkit-transition: all .3s ease;
+        transition: all .3s ease;
+        z-index: 99;
+        height: 100%;
     }
     .float-menu h2 {
         padding: 15px 0 0 15px;
@@ -72,17 +97,13 @@
     }
 </style>
 <template>
-    <div class="float-menu iscroll" v-show="show">
+    <div class="float-menu iscroll" :class="{'show':show}">
         <section id="categoryPage">
             <h2>商品分类</h2>
             <section id="categoryList" class="ui-box-group cf">
-                <div class="ui-box" cid="0">
+                <div class="ui-box" cid="{{item.id}}" v-for="item in list">
                     <div class="ui-box-pic"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_180c7e55ed69d03451934258c6aab7a9/0" width="100%"></div>
-                    <h3>首页精选</h3>
-                </div>
-                <div class="ui-box" cid="72">
-                    <div class="ui-box-pic"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_9fc37b1cdd36634840a9c2bc6493da55/0" width="100%"></div>
-                    <h3>航海王</h3>
+                    <h3>{{item.id}}</h3>
                 </div>
             </section>
         </section>
@@ -93,7 +114,8 @@
 
     module.exports = {
         replace:true,
-        props: ["show"]
+        props: ["show","list"]
+
     }
 
 </script>

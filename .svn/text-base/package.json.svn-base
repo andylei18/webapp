@@ -1,11 +1,12 @@
 {
-  "name": "learn-webpack",
+  "name": "webapp",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
     "extract-text-webpack-plugin": "^0.8.2"
   },
   "devDependencies": {
+    "mockjs": "^1.0.0",
     "css-loader": "^0.20.2",
     "cssnext-loader": "^1.0.1",
     "fastclick": "^1.0.6",
@@ -24,11 +25,13 @@
     "vue-resource":"^0.1.17",
     "vue-async-data":"^1.0.2",
     "vue-router": "^0.7.5",
-    "webpack": "^1.12.3",
-    "webpack-dev-server": "^1.12.1",
-    "webpack-zepto": "^0.0.1"
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0",
+    "webpack-zepto": "0.0.1"
   },
   "scripts": {
+    "mb": "export PRODUCTION=1 && webpack --progress --hide-modules",
+    "wb": "set PRODUCTION=1 && webpack --progress --hide-modules",
     "dev": "webpack-dev-server --progress --profile --colors --inline ",
     "port": "webpack-dev-server --progress --colors --inline --port 9090 ",
     "hot": "webpack-dev-server --progress --colors --inline --hot",

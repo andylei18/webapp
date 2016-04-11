@@ -1,18 +1,18 @@
 10
 
 dir
-0
+217307
 svn://dinglei@211.151.70.29/svn/ria/customer/biz/branches/20160316_VueGroup/webapp/src/mock
 svn://dinglei@211.151.70.29/svn
-add
 
 
 
+2016-04-08T11:28:23.916282Z
+217307
+dinglei
 
 
 
-
-svn:special svn:externals svn:needs-lock
 
 
 
@@ -31,12 +31,66 @@ file
 
 
 
-add
+
+2016-04-08T11:22:08.000000Z
+7909890e1d51439b2c1b2be548d11d47
+2016-04-08T11:28:23.916282Z
+217307
+dinglei
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1638
 
 list.json
 file
 
 
 
-add
+
+2016-04-06T10:19:32.000000Z
+0d506ba1f93a30e6649c719e8e8351d9
+2016-04-08T11:28:23.916282Z
+217307
+dinglei
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1461
 
