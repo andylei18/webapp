@@ -29,6 +29,17 @@ module.exports = function(router){
             component: require('./views/cart.vue')
         },
 
+        //订单页
+        '/order/:uid/:orderid':{
+            name:'order',
+            component: require('./views/order.vue')
+        },
+
+        //收货地址页
+        '/address/:uid':{
+            name:'address',
+            component: require('./views/address.vue')
+        },
 
 
         //个人中心页

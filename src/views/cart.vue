@@ -335,14 +335,17 @@
     <section id="cartScroll" class="wrap-card">
 
         <!--加载框-->
-        <loading :show="loading.show"></loading>
+        <!--<loading :show="loading.show"></loading>-->
+
+        <!--提示语框-->
+        <tips :show.sync="tips.show" :text="tips.text"></tips>
 
         <section class="page-pay-cart">
-            <p class="box-row f-thin">可用积分：0</p><section class="layout-box level" number="1">
+            <p class="box-row f-thin">可用积分：{{userpoints}}</p><section class="layout-box level" number="1">
             <div class="layout-box-top flex-between box-row cart-fn">
                 <h6> 时趣互动 </h6>
                 <div class="right ">
-                    <button _module="cartBuySubmitBtn" id="cartBuySubmit_2" type="button" class="btn-green">结算</button>
+                    <button type="button" class="btn-green" @click="payAll">结算</button>
                     <div class="total">
                         <p>{{totalprice| currency '￥'}}</p>
                         <p class="fz-s">
@@ -385,9 +388,14 @@
                     <!--积分区-->
                     <div class="discout flex-between">
                         <p class="f-em">{{item.discountname}}</p>
-                        <div class="switch-on">
+
+                        <div v-if="!item.ck" :class="item.discount?'switch-on':'switch-off'">
                             <i></i>
                         </div>
+                        <div v-if="item.ck" :class="item.discount?'switch-on':'switch-off'" @click="clickHandler(item)">
+                            <i></i>
+                        </div>
+
                     </div>
                     <!--积分区  end-->
                 </div>
@@ -398,6 +406,7 @@
                 全部商品
                 <i class="iconfont icon-ar-downthin"></i>
             </div>
+
         </section>
         </section>
     </section>
@@ -408,13 +417,18 @@
     module.exports = {
         data:function(){
             return{
+                userpoints:0,
                 userid:"110",
                 totalprice:"0",
                 total:0,
                 list:[],
                 loading:{
                     show:false,
-                    txt:""
+                    text:""
+                },
+                tips:{
+                    show:false,
+                    text:""
                 }
             }
         },
@@ -528,10 +542,69 @@
                         }
                     }
                 });
+            },
+            //活动开关
+            clickHandler:function(obj){
+                var _self = this;
+
+                if(_self.userpoints == 0 ){
+
+                    _self.tips.show = true;
+
+                    _self.tips.text = "您得剩余积分不够兑换此商品!";
+
+                }else{
+
+                    _self.tips.show = false;
+
+                    _self.tips.text = "";
+
+                    obj.discount = true;
+                }
+            },
+            //结算所有礼品
+            payAll:function(){
+                var _self = this;
+
+                if(_self.total==0){
+
+                    _self.tips.show = true;
+
+                    _self.tips.text = "您还没有选择要付款的商品!";
+
+                }else{
+
+                    //请求后台生成订单
+                    _self.ajaxOrder();
+                }
+
+            },
+            //请求后台生成订单
+            ajaxOrder:function(){
+
+                var _self = this;
+
+                $.ajax({
+                    type: "GET",
+                    url:'../../src/mock/true.json',
+                    dataType:"json",
+                    data:{
+
+                    },
+                    success :function(json){
+
+                        if(json&&json.code==0){
+
+                            _self.$router.go({name:'order',params:{}});
+
+                        }
+                    }
+                });
             }
         },
         components:{
-            "loading":require('./../components/loading.vue')
+            "loading":require('./../components/loading.vue'),
+            "tips":require('./../components/tips.vue')
         }
     }
 </script>

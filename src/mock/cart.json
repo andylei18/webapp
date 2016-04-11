@@ -5,10 +5,10 @@
     "userid":"2334",
     "cartlist":[
       {"id":"001","name":"合金枪模汤姆逊烈龙1111","img":"http://p.qpic.cn/qqjifen_pic/0/upload_2aa0c026034e7e901ef832fa2dee8fa1/0","price":1002,"specifications1":"红色","specifications2":"组装版","numbers":5,"discount":false,"discountname":"抵扣：110积分减10元","ck":false,"ckclass":""},
-      {"id":"002","name":"合金枪模汤姆逊烈龙2222","img":"http://p.qpic.cn/qqjifen_pic/0/upload_e0c72eab91ebba89f7f1086875c36766/0","price":2002,"specifications1":"黑色","specifications2":"组装版","numbers":3,"discount":true,"discountname":"抵扣：120积分减20元","ck":false,"ckclass":""},
+      {"id":"002","name":"合金枪模汤姆逊烈龙2222","img":"http://p.qpic.cn/qqjifen_pic/0/upload_e0c72eab91ebba89f7f1086875c36766/0","price":2002,"specifications1":"黑色","specifications2":"组装版","numbers":3,"discount":false,"discountname":"抵扣：120积分减20元","ck":false,"ckclass":""},
       {"id":"003","name":"合金枪模汤姆逊烈龙3333","img":"http://p.qpic.cn/qqjifen_pic/0/upload_5027d5b87bb90b8e887a2f33827a862c/0","price":3002,"specifications1":"蓝色","specifications2":"组装版","numbers":11,"discount":false,"discountname":"抵扣：130积分减130元","ck":false,"ckclass":""},
-      {"id":"004","name":"合金枪模汤姆逊烈龙4444","img":"http://p.qpic.cn/qqjifen_pic/0/upload_c7c8af5fbcd6eced088317cc9f00f4a6/0","price":4002,"specifications1":"绿色","specifications2":"组装版","numbers":2,"discount":true,"discountname":"抵扣：140积分减140元","ck":false,"ckclass":""},
-      {"id":"005","name":"合金枪模汤姆逊烈龙5555","img":"http://p.qpic.cn/qqjifen_pic/0/upload_75f2a36717724149da6a061e56797401/0","price":5020,"specifications1":"粉色","specifications2":"组装版","numbers":6,"discount":true,"discountname":"抵扣：150积分减310元","ck":false,"ckclass":""}
+      {"id":"004","name":"合金枪模汤姆逊烈龙4444","img":"http://p.qpic.cn/qqjifen_pic/0/upload_c7c8af5fbcd6eced088317cc9f00f4a6/0","price":4002,"specifications1":"绿色","specifications2":"组装版","numbers":2,"discount":false,"discountname":"抵扣：140积分减140元","ck":false,"ckclass":""},
+      {"id":"005","name":"合金枪模汤姆逊烈龙5555","img":"http://p.qpic.cn/qqjifen_pic/0/upload_75f2a36717724149da6a061e56797401/0","price":5020,"specifications1":"粉色","specifications2":"组装版","numbers":6,"discount":false,"discountname":"抵扣：150积分减310元","ck":false,"ckclass":""}
     ]
   }
 }

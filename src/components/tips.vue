@@ -6,7 +6,7 @@
         margin: 20px 0;
         padding: 10px 10px 10px 5px;
         position:absolute;
-        z-index : 5000;
+        z-index : 5001;
         visibility:visible
     }
     .icon-load, .icon-tipwarn {
@@ -37,31 +37,14 @@
         100%{-webkit-transform:rotate(180deg)
         }
     }
-
-    /* 必需 */
-    .loadding-transition {
-        transition: all .3s ease;
-        padding: 10px;
-        overflow: hidden;
-    }
-
-    /* .loadding-enter 定义进入的开始状态 */
-    /* .loadding-leave 定义离开的结束状态 */
-    .loadding-enter, .loadding-leave {
-        height: 0;
-        padding: 0 10px;
-        opacity: 0;
-    }
 </style>
 <template>
     <section
-                v-show="show"
-                class="warn-tips loadding"
-                :style="{left:left+'px',top:top+'px'}"
-                transition="loadding"
+            v-show="show"
+            class="warn-tips"
+            :style="{left:left+'px',top:top+'px'}"
             >
-        <i class="icon-load"></i>
-        <p>{{this.text==''||this.text==undefined?'加载中，请稍候...':this.text}}</p>
+        <p>{{this.text==''||this.text==undefined?'提示语sorry':this.text}}</p>
     </section>
 </template>
 <script>
@@ -74,23 +57,32 @@
                 top:""
             }
         },
-        props: {
-            // 显示和隐藏 默认值是隐藏
-            show: {
-                type: Boolean,
-                default: false
-            },
-            text:{
-                type:String
-            }
-        },
+        props:['show','text'],
         ready:function(){
             var _self = this,
-                bodyW = document.body.clientWidth,
-                bodyH = document.body.clientHeight;
+                    bodyW = document.body.clientWidth,
+                    bodyH = document.body.clientHeight;
 
             _self.left = Math.round(bodyW / 3.1);
             _self.top = Math.round(bodyH / 2.12);
+        },
+        watch:{
+            'show':function(val,oldval){
+
+                var _self = this;
+
+                if(val){
+
+                    setTimeout(function(){
+
+                        _self.show = false;
+
+                    },2000);
+
+                }
+
+
+            }
         }
 
     }
