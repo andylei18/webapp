@@ -1,7 +1,7 @@
 10
 
 dir
-217307
+217626
 svn://dinglei@211.151.70.29/svn/ria/customer/biz/branches/20160316_VueGroup/webapp
 svn://dinglei@211.151.70.29/svn
 
@@ -38,7 +38,7 @@ dir
 
 package.json
 file
-
+217307
 
 
 
@@ -72,7 +72,7 @@ has-props
 
 .gitignore
 file
-
+217307
 
 
 
@@ -106,7 +106,7 @@ dinglei
 
 index.tpl
 file
-
+217307
 
 
 
@@ -143,7 +143,7 @@ dir
 
 index.html
 file
-
+217307
 
 
 
@@ -177,7 +177,7 @@ dinglei
 
 webpack.config.js
 file
-
+217307
 
 
 
@@ -208,4 +208,38 @@ has-props
 
 
 5270
+
+README.md
+file
+217629
+
+
+
+2016-04-07T06:18:48.000000Z
+90d7e2e5661dc3de7cbb072f405804a3
+2016-04-11T11:14:01.338286Z
+217629
+dinglei
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1075
 

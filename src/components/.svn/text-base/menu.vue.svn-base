@@ -101,7 +101,7 @@
         <section id="categoryPage">
             <h2>商品分类</h2>
             <section id="categoryList" class="ui-box-group cf">
-                <div class="ui-box" cid="{{item.id}}" v-for="item in list">
+                <div class="ui-box" cid="{{item.id}}" v-for="item in list" @click="getClassData(item)">
                     <div class="ui-box-pic"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_180c7e55ed69d03451934258c6aab7a9/0" width="100%"></div>
                     <h3>{{item.id}}</h3>
                 </div>
@@ -114,7 +114,39 @@
 
     module.exports = {
         replace:true,
-        props: ["show","list"]
+        props: ["show","list"],
+        methods:{
+            //获取相对应的商品分类 列表数据
+            getClassData:function(){
+                var _self = this;
+
+                $.ajax({
+                    type: "GET",
+                    url:'../../src/mock/list.json',
+                    dataType:"json",
+                    success :function(data){
+
+                        var json = Mock.mock(data);
+
+                        if(json&&json.code==0){
+
+                            //同步左侧菜单数据
+                            _self.list = json.data.menu.list;
+
+                            //同步父组件轮播图数据
+                            _self.$parent.banner = json.data.banner;
+
+                            //同步父组件列表数据
+                            _self.$parent. goodlist = json.data.goodlist;
+
+                            //关闭遮罩层和左侧菜单
+                            _self.show = false;
+                            $("html, body, .page").removeClass("scroll-hide");
+                        }
+                    }
+                });
+            }
+        }
 
     }
 

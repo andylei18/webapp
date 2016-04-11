@@ -1,7 +1,7 @@
 10
 
 dir
-217307
+217626
 svn://dinglei@211.151.70.29/svn/ria/customer/biz/branches/20160316_VueGroup/webapp/src
 svn://dinglei@211.151.70.29/svn
 
@@ -40,7 +40,7 @@ dir
 
 app.js
 file
-
+217307
 
 
 
@@ -74,14 +74,14 @@ dinglei
 
 router.js
 file
+217627
 
 
 
-
-2016-04-06T10:47:33.000000Z
-155ead2055f8b5079723a456c26eeb32
-2016-04-08T11:28:23.916282Z
-217307
+2016-04-11T10:14:41.000000Z
+864d536d48c78255157f8cff35a628ba
+2016-04-11T11:11:02.324589Z
+217627
 dinglei
 
 
@@ -104,14 +104,14 @@ dinglei
 
 
 
-776
+1064
 
 views
 dir
 
 app.vue
 file
-
+217307
 
 
 
