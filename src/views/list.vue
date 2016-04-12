@@ -225,6 +225,10 @@
 
     <div id="applist">
         <div class="page">
+
+            <!--加载框-->
+            <loading :show="loadding.show"></loading>
+
             <div class="page-cover" v-if="menu.show" @click="showMenus"></div>
 
             <!--头部-->
@@ -304,30 +308,26 @@
                     list:[]
                 },
                 banner:[],
-                goodlist:[]
+                goodlist:[],
+                loadding:{
+                    show:false,
+                    text:""
+                },
+                scroll:true,
+                searchKey:{
+                    page:1,
+                    limit:20,
+                    classtype:'all',
+                    mdrender:true
+                },
             }
         },
-        asyncData: function(resolve, reject) {
-            var _self = this;
-
-            _self.getAjax(resolve);
-
-            _self.$nextTick(function() {
-                new Swiper(_self.$els.swiper, {
-                    pagination: '.swiper-pagination',
-                    paginationClickable: true,
-                    autoplay:3000,
-                    loop:true,
-                    autoplayDisbleOnInteraction:false
-
-                });
-            });
-        },
-       /* route:{
+        route:{
             data:function(transition){
                 var _self = this;
 
 
+                _self.getAjax();
 
                 _self.$nextTick(function() {
                     new Swiper(_self.$els.swiper, {
@@ -339,30 +339,43 @@
 
                     });
                 });
+
+                //滚动加载
+                _self.scrollList();
+            },
+            deactivate:function(transition){
+                $(window).off('scroll');
+                transition.next();
             }
 
-        },*/
+        },
         methods: {
-            getAjax:function(resolve){
+            getAjax:function(){
+                var _self = this,
+                   params = $.param(_self.searchKey);
+
                 $.ajax({
                     type: "GET",
                     url:'../../src/mock/list.json',
+                    beforeSend:function(){
+                        _self.loadding.show = true;
+                    },
+                    data:params,
                     dataType:"json",
                     success :function(data){
-
                         var json = Mock.mock(data);
+
+                        _self.scroll = true;
+
+                        _self.loadding.show = false;
 
                         if(json&&json.code==0){
 
+                            _self.userid = json.data.userid;
+                            _self.menu.list = json.data.menu.list;
+                            _self.banner = json.data.banner;
+                            _self.goodlist = json.data.goodlist;
 
-                            resolve({
-                                userid:json.data.userid,
-                                menu:{
-                                    list:json.data.menu.list
-                                },
-                                banner:json.data.banner,
-                                goodlist:json.data.goodlist
-                            });
                         }
                     }
                 });
@@ -379,10 +392,30 @@
 
                 $("html, body, .page").removeClass("scroll-hide");
 
+            },
+            //滚动加载
+            scrollList:function(){
+
+
+                var _self = this;
+
+                $(window).on('scroll', function() {
+
+
+                    if(_self.scroll){
+                        var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
+                        if ($(document).height() <= totalheight + 200) {
+                            _self.scroll = false;
+                            _self.searchKey.limit += 20;
+                            _self.getAjax();
+                        }
+                    }
+                });
             }
         },
         components:{
-            "bpMenu":require('./../components/menu.vue')
+            "bpMenu":require('./../components/menu.vue'),
+            "loading":require('./../components/loading.vue')
         }
     }
 

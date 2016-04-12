@@ -173,7 +173,7 @@
                 addressName:"",
                 addressTel:"",
                 addressAddress:"",
-                addressPostCode:"",
+                addressPostCode:""
             }
         },
         methods: {
@@ -182,24 +182,22 @@
             saveForm:function(){
                 var _self = this;
 
+                var uid = _self.$route.params.uid;
+
                 $.ajax({
                     type: "GET",
                     url:'../../src/mock/true.json',
                     dataType:"json",
-                    data:{
-                        data:_self.$data
-                    },
+                    data:{data:_self.$data},
                     success :function(json){
 
                         if(json&&json.code==0){
 
                             _self.$router.go({
-
                                 name:'order',
                                 params:{
-                                    uid:2222
+                                    uid:uid
                                 }
-
                             });
 
                         }

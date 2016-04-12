@@ -33,6 +33,13 @@ dir
 
 add
 
+.git
+dir
+
+
+
+add
+
 dist
 dir
 
@@ -242,4 +249,11 @@ dinglei
 
 
 1075
+
+node_modules
+dir
+
+
+
+add
 

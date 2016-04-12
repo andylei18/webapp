@@ -332,10 +332,10 @@
 
 <template>
 
-    <section id="cartScroll" class="wrap-card">
+    <section class="wrap-card">
 
         <!--加载框-->
-        <!--<loading :show="loading.show"></loading>-->
+        <loading :show="loadding.show"></loading>
 
         <!--提示语框-->
         <tips :show.sync="tips.show" :text="tips.text"></tips>
@@ -422,7 +422,7 @@
                 totalprice:"0",
                 total:0,
                 list:[],
-                loading:{
+                loadding:{
                     show:false,
                     text:""
                 },
@@ -451,8 +451,13 @@
                     data:{
                         userid:_self.userid
                     },
+                    beforeSend:function(){
+                        _self.loadding.show = true;
+                    },
                     dataType:"json",
                     success :function(json){
+
+                        _self.loadding.show = false;
 
                         if(json&&json.code==0){
 
@@ -528,8 +533,8 @@
                         ecid:id
                     },
                     dataType:"json",
-                    before:function(){
-                        _self.loading.show = true;
+                    beforeSend:function(){
+                        _self.loadding.show = true;
                     },
                     success :function(json){
 
@@ -591,7 +596,12 @@
                     data:{
 
                     },
+                    beforeSend:function(){
+                        _self.loadding.show = true;
+                    },
                     success :function(json){
+
+                        _self.loadding.show = false;
 
                         if(json&&json.code==0){
 

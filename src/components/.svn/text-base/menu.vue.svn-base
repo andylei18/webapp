@@ -124,9 +124,13 @@
                     type: "GET",
                     url:'../../src/mock/list.json',
                     dataType:"json",
+                    beforeSend:function(){
+                        _self.$parent.loadding.show = true;
+                    },
                     success :function(data){
-
                         var json = Mock.mock(data);
+
+                        _self.$parent.loadding.show = false;
 
                         if(json&&json.code==0){
 

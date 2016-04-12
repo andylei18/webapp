@@ -1,9 +1,7 @@
 {
   "main": [
     "build.js",
-    "style.css",
-    "build.js.map",
-    "style.css.map"
+    "build.js.map"
   ],
   "vendor.js": [
     "vendor.js",
