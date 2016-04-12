@@ -2,6 +2,16 @@
   "code":0,
   "message":"OK",
   "data":{
-
+    "goodsname":"标准Q妹公仔",
+    "typename":"公仔尺码",
+    "typelist":[
+      {"size":16,"numbers":5,"ck":true},
+      {"size":25,"numbers":3,"ck":false},
+      {"size":45,"numbers":10,"ck":false}
+    ],
+    "discount":true,
+    "discountname":"用积分可再省6元",
+    "price":22,
+    "oldprice":29.9
   }
 }

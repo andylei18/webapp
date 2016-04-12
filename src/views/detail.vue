@@ -415,6 +415,9 @@
 
     <div class="page">
 
+        <!--加载框-->
+        <loading :show="loadding.show"></loading>
+
         <div class="wrap">
             <div class="wrap-summary">
                 <section class="g-summary">
@@ -485,8 +488,6 @@
                                 <div style="text-align: center;">
 
                                     <!--轮播图-->
-
-
                                     <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_45b43cedd4885c4e1b3e003b077bc8cc/640" border="0" width="640" height="640" alt="">
                                     <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_e23d1df0552b9d9055c35f40236a880d/640" border="0" width="640" height="640" alt="">
                                     <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_e824114959516f150388425109813c88/640" border="0" width="640" height="640" alt="">
@@ -497,6 +498,8 @@
                                     <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_46afcee77bbb04affab6ab87669ca21a/640" border="0" width="640" height="640" alt="">
                                     <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_a12cd81192f8a8172140de3fee0fd79f/640" border="0" width="640" height="640" alt="">
                                     <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_f518e38afe9f5130110728135dde5b6d/640" border="0" width="640" height="640" alt="">
+
+
                                 </div>
                                 <div>
                                     <div>
@@ -570,50 +573,47 @@
                     </a>
                 </div>
                 <div>
-                    <button id="detailAddCart" type="button" class="btn-green">加入购物车</button>
+                    <button type="button" class="btn-green" @click="this.popbox.show = true">加入购物车</button>
                     &nbsp;&nbsp;
-                    <button id="detailSubmitBtn" type="button" class="btn-buy">立即购买</button>
+                    <button type="button" class="btn-buy">立即购买</button>
                 </div>
             </div>
         </section>
 
 
-
-        <section class="pop-box fix-bt" style="display: none;">
+        <section class="pop-box fix-bt" v-show="popbox.show">
             <div class="buy-entry">
                 <div class="pop-cont">
-                    <h2>标准Q妹公仔</h2>
+                    <h2>{{goods.goodsname}}</h2>
                     <div class="ui-fn-info">
                         <p>
-                            <strong class="f-price">￥22</strong>
-                            <span class="f-em">（用积分可再省6元）</span>
+                            <strong class="f-price">￥{{goods.price}}</strong>
+                            <span class="f-em">（{{goods.discountname}}）</span>
                         </p>
-                        <del>原价：￥29.9</del>
+                        <del>原价：￥{{goods.oldprice}}</del>
                     </div>
                     <div class="ui-fn-select ">
                         <dl>
-                            <dt>公仔尺码</dt>
+                            <dt>{{goods.typename}}</dt>
                             <dd>
-                                <label class="selected">16CM<i class="iconfont icon-rightp"></i></label>
-                                <label >25CM<i class="iconfont icon-rightp"></i></label>
-                                <label id="pid_0_vid_2" group="895" val="936" skumeta="公仔尺码:45CM">45CM<i class="iconfont icon-rightp"></i></label>
+                                <label v-for="item in goods.typelist" :class="item.ck?'selected':''" @click="selectedType(item)">{{item.size}}CM<i class="iconfont icon-rightp"></i></label>
                             </dd>
                         </dl>
                         <dl>
                             <dt>数量</dt>
                             <dd>
                                 <div class="ui-duration">
-                                    <a id="detailNumberDel" href="javascript:void 0;"><span>-</span></a>
-                                    <div class="dur-ipt ">
-                                        <input id="detailNumberValue" type="text" value="1" maxlength="3"></div>
-                                    <a id="detailNumberAdd" href="javascript:void 0;"><span>+</span></a>
+                                    <a href="javascript:void 0;" @click="calculation(0)"><span>-</span></a>
+                                    <div class="dur-ipt">
+                                        <input type="text" :value="selected.numbers" v-model="selected.numbers" maxlength="3"></div>
+                                    <a href="javascript:void 0;" @click="calculation(1)"><span>+</span></a>
                                 </div>
                             </dd>
                         </dl>
                     </div>
                 </div>
-                <button type="button" id="detailBuyBtn" class="btn-buy">立即购买</button>
-                <button type="button" id="detailCartBtn" class="btn-green" style="display:none;">加入购物车</button>
+                <button type="button" class="btn-buy" v-show="popbox.btn.pay">立即购买</button>
+                <button type="button" class="btn-green" @click="joinCarEvent">加入购物车</button>
             </div>
         </section>
 
@@ -632,8 +632,36 @@
         replace:true,
         data:function(){
               return{
+                  loadding:{
+                    show:false
+                  },
+                  tips:{
+                      show:false,
+                      text:""
+                  },
                   swipe:{
                       speed:3000
+                  },
+                  popbox:{
+                      show:false,
+                      btn:{
+                          pay:false
+                      }
+                  },
+                  goods:{
+                      goodsname:"",
+                      typename:"",
+                      typelist:[],
+                      discount:true,
+                      discountname:"",
+                      price:"",
+                      oldprice:""
+                  },
+                  selected:{
+                      size:"",
+                      numbers:1,
+                      ck:false,
+                      stock:"",
                   }
               }
         },
@@ -641,13 +669,13 @@
             data:function(transition){
                 var _self = this;
                 //请求礼品的详细数据
-                _self.getAjax();
+                _self.getAjax(transition);
             }
 
         },
         methods: {
             //请求礼品的详细数据
-            getAjax:function(){
+            getAjax:function(transition){
 
                 var _self = this,
                     goodsid = _self.$route.params.goodsid;
@@ -663,22 +691,108 @@
                     },
                     dataType:"json",
                     success :function(json){
-
                         if(json&&json.code==0){
 
+                            transition.next({
 
+                                goods:{
+                                    goodsname:json.data.goodsname,
+                                    typename:json.data.typename,
+                                    typelist:json.data.typelist,
+                                    discount:json.data.discount,
+                                    discountname:json.data.discountname,
+                                    price:json.data.price,
+                                    oldprice:json.data.oldprice
+                                },
+                                selected:{
+                                    size:json.data.typelist[0].size,
+                                    numbers:1,
+                                    ck:json.data.typelist[0].ck,
+                                    stock:json.data.typelist[0].numbers,
+                                }
+
+                            });
 
                         }
-
                     }
                 });
 
+            },
+            //选择商品规格
+            selectedType:function(obj){
+                var _self = this,
+                    listdata = _self.goods.typelist;
+
+                for(var i in listdata){
+                    listdata[i].ck=false;
+                }
+
+                obj.ck = true;
+
+                _self.selected.size = obj.size;
+
+                _self.selected.stock = obj.numbers;
+
+                _self.selected.ck = obj.ck;
+
+                _self.selected.numbers = 1;
+            },
+            //计算选择商品规格的数量
+            calculation:function(num){
+                var _self = this,
+                    obj = _self.selected;
+
+                if(num == 0){
+
+                    if(obj.numbers <= obj.stock && obj.numbers > 1){
+
+                        obj.numbers = parseInt(obj.numbers) - 1;
+
+                    }
+
+                }else{
+
+                    if(obj.numbers < obj.stock){
+
+                        obj.numbers = parseInt(obj.numbers) + 1;
+
+                    }
+
+                }
+            },
+            //加入购物车
+            joinCarEvent:function(){
+                var _self = this,
+                    typeid = _self.selected.id,
+                    num = _self.selected.numbers,
+                    goodsid = _self.$route.params.goodsid;
+
+
+                $.ajax({
+                    type: "GET",
+                    url:'../../src/mock/true.json',
+                    beforeSend:function(){
+                        //_self.loadding.show = true;
+                    },
+                    data:{
+                        goodsid:goodsid,
+                        typeid:typeid,
+                        numbers:num
+                    },
+                    dataType:"json",
+                    success :function(json){
+                        if(json&&json.code==0){
+
+                        }
+                    }
+                });
             }
         },
         components:{
             "loading":require('./../components/loading.vue'),
             "swipe":Swipe,
-            "swipe-item":SwipeItem
+            "swipe-item":SwipeItem,
+            "tips":require('./../components/tips.vue')
         }
 
     }
