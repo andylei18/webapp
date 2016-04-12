@@ -27,9 +27,6 @@
         -webkit-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
     }
-
-
-
     .card-scroll {
         height: 100%;
     }
@@ -50,6 +47,9 @@
 
     <div class="card-page card-active card-scroll">
 
+        <!-- 页面加载进度条 -->
+        <progress-bar :show="progressbar"></progress-bar>
+
         <!-- 缓存一级路由切换的页面 -->
         <router-view class="g-view" keep-alive :transition="effect" transition-mode="out-in"></router-view>
 
@@ -60,14 +60,13 @@
     module.exports = {
         data: function() {
             return {
+                progressbar           : false,  //loading-bar
                 effect            : 'fade', //路由模板动画参数
                 routeList         : [],     //访问周期中所访问了那些路径,在route.js中设置
             };
         },
-        ready:function(){
-            var _self = this;
-            //this.$router.go({name:'cart'});
-
+        components:{
+            "progressBar":require('./components/progressbar.vue')
         }
     }
 </script>

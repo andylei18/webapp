@@ -220,6 +220,16 @@
         vertical-align: 1px;
         color: #fff;
     }
+    .swipe, .swipe-items-wrap {
+        overflow: hidden;
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+    .swipe img{
+        height: 100%;
+        width: 100%;
+    }
 </style>
 <template>
 
@@ -256,7 +266,7 @@
                 <section>
                     <section class="carousel ad-banner-crousel" style="height: 140.625px;">
                         <!-- Swiper -->
-                        <div class="swiper-container" v-el:swiper>
+                        <!--<div class="swiper-container" v-el:swiper>
                             <ul class="swiper-wrapper" v-for="item in banner">
                                 <li class="swiper-slide">
                                     <a>
@@ -265,7 +275,16 @@
                                 </li>
                             </ul>
 
-                        </div>
+                        </div>-->
+
+                        <!--轮播图-->
+                        <swipe :speed="swipe.speed">
+                            <swipe-item v-for="item in banner">
+                                <img :src="item.url" :alt="item.title">
+                            </swipe-item>
+                        </swipe>
+
+
                     </section>
 
                     <section id="goodsList">
@@ -296,8 +315,10 @@
 <script>
 
     //require('../../src/css/views/home.css');
-    require('swiper');
-    require('../../node_modules/swiper/dist/css/swiper.min.css');
+
+    require('../../node_modules/vue-swipe/lib/vue-swipe.css');
+
+    var { Swipe, SwipeItem } = require('vue-swipe');
 
     module.exports = {
         data: function() {
@@ -320,25 +341,17 @@
                     classtype:'all',
                     mdrender:true
                 },
+                swipe:{
+                    speed:3000
+                }
             }
         },
         route:{
             data:function(transition){
                 var _self = this;
 
-
+                //请求列表全部数据
                 _self.getAjax();
-
-                _self.$nextTick(function() {
-                    new Swiper(_self.$els.swiper, {
-                        pagination: '.swiper-pagination',
-                        paginationClickable: true,
-                        autoplay:3000,
-                        loop:true,
-                        autoplayDisbleOnInteraction:false
-
-                    });
-                });
 
                 //滚动加载
                 _self.scrollList();
@@ -350,6 +363,8 @@
 
         },
         methods: {
+
+            //请求列表数据
             getAjax:function(){
                 var _self = this,
                    params = $.param(_self.searchKey);
@@ -395,12 +410,10 @@
             },
             //滚动加载
             scrollList:function(){
-
-
+                
                 var _self = this;
 
                 $(window).on('scroll', function() {
-
 
                     if(_self.scroll){
                         var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());
@@ -415,8 +428,9 @@
         },
         components:{
             "bpMenu":require('./../components/menu.vue'),
-            "loading":require('./../components/loading.vue')
+            "loading":require('./../components/loading.vue'),
+            "swipe":Swipe,
+            "swipe-item":SwipeItem
         }
     }
-
 </script>
