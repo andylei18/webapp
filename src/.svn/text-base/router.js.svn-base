@@ -119,12 +119,7 @@ module.exports = function(router){
 
         }
 
-
-
         transition.next();
-
-
-
 
     });
 
