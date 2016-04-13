@@ -409,6 +409,21 @@
         transition: all .3s ease;
         overflow-x: hidden;
     }
+
+
+    /* 必需 */
+    .car-popbox-transition {
+        transition: all .3s ease;
+        height: 250px;
+        overflow: hidden;
+    }
+
+    /* .car-popboxenter 定义进入的开始状态 */
+    /* .car-popbox-leave 定义离开的结束状态 */
+    .car-popbox-enter, .car-popbox-leave {
+        height: 0;
+        opacity: 0;
+    }
 </style>
 
 <template>
@@ -488,16 +503,16 @@
                                 <div style="text-align: center;">
 
                                     <!--轮播图-->
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_45b43cedd4885c4e1b3e003b077bc8cc/640" border="0" width="640" height="640" alt="">
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_e23d1df0552b9d9055c35f40236a880d/640" border="0" width="640" height="640" alt="">
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_e824114959516f150388425109813c88/640" border="0" width="640" height="640" alt="">
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_eafdb51a1ce9c691e22d0e6d3f49f59c/640" border="0" width="640" height="640" alt="">
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_53ba4a95b395de98d66185a05b595700/640" border="0" width="640" height="640" alt="">
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_0463745c73b4798538e57f17599fecc8/640" border="0" width="640" height="640" alt="">
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_9caa328dccc67f8ca24a0eb3e962e118/640" border="0" width="640" height="640" alt="">
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_46afcee77bbb04affab6ab87669ca21a/640" border="0" width="640" height="640" alt="">
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_a12cd81192f8a8172140de3fee0fd79f/640" border="0" width="640" height="640" alt="">
-                                    <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_f518e38afe9f5130110728135dde5b6d/640" border="0" width="640" height="640" alt="">
+                                    <!--<img src="http://p.qpic.cn/qqjifen_pic/0/upload_45b43cedd4885c4e1b3e003b077bc8cc/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_e23d1df0552b9d9055c35f40236a880d/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_e824114959516f150388425109813c88/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_eafdb51a1ce9c691e22d0e6d3f49f59c/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_53ba4a95b395de98d66185a05b595700/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_0463745c73b4798538e57f17599fecc8/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_9caa328dccc67f8ca24a0eb3e962e118/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_46afcee77bbb04affab6ab87669ca21a/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_a12cd81192f8a8172140de3fee0fd79f/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_f518e38afe9f5130110728135dde5b6d/640" border="0" width="640" height="640" alt="">-->
 
 
                                 </div>
@@ -526,7 +541,7 @@
                     </section>
                 </div>
             </div>
-            <div id="maskDiv" class="mask" style="display: none;"></div>
+            <div class="mask" v-show="mask"></div>
             <div class="btn-round-cart">
                 <i class="iconfont icon-cart"></i>
                 <sup>1</sup>
@@ -539,7 +554,7 @@
                     <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_d3189304fc9be84fb638a9ca22741db3/0" width="100%"></li>
                     <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_b20067753ffb95fafdf7d170d050b5d7/0" width="100%"></li>-->
 
-                    <!--<swipe :speed="swipe.speed">
+                    <swipe :speed="swipe.speed">
                         <swipe-item>
                             <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_45b43cedd4885c4e1b3e003b077bc8cc/640" :alt="">
                         </swipe-item>
@@ -549,7 +564,7 @@
                         <swipe-item>
                             <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_e824114959516f150388425109813c88/640" :alt="">
                         </swipe-item>
-                    </swipe>-->
+                    </swipe>
 
 
                 </ul>
@@ -573,7 +588,7 @@
                     </a>
                 </div>
                 <div>
-                    <button type="button" class="btn-green" @click="this.popbox.show = true">加入购物车</button>
+                    <button type="button" class="btn-green" @click.stop="this.popbox.show = true">加入购物车</button>
                     &nbsp;&nbsp;
                     <button type="button" class="btn-buy">立即购买</button>
                 </div>
@@ -581,7 +596,7 @@
         </section>
 
 
-        <section class="pop-box fix-bt" v-show="popbox.show">
+        <section class="pop-box fix-bt" v-show="popbox.show" transition="car-popbox" @click.stop>
             <div class="buy-entry">
                 <div class="pop-cont">
                     <h2>{{goods.goodsname}}</h2>
@@ -613,10 +628,9 @@
                     </div>
                 </div>
                 <button type="button" class="btn-buy" v-show="popbox.btn.pay">立即购买</button>
-                <button type="button" class="btn-green" @click="joinCarEvent">加入购物车</button>
+                <button type="button" class="btn-green" @click.stop="joinCarEvent">加入购物车</button>
             </div>
         </section>
-
 
     </div>
 
@@ -626,7 +640,8 @@
 <script>
 
     require('../../node_modules/vue-swipe/lib/vue-swipe.css');
-    var { Swipe, SwipeItem } = require('vue-swipe');
+
+    var {Swipe, SwipeItem} = require('vue-swipe');
 
     module.exports = {
         replace:true,
@@ -634,10 +649,6 @@
               return{
                   loadding:{
                     show:false
-                  },
-                  tips:{
-                      show:false,
-                      text:""
                   },
                   swipe:{
                       speed:3000
@@ -670,6 +681,11 @@
                 var _self = this;
                 //请求礼品的详细数据
                 _self.getAjax(transition);
+
+                document.addEventListener("click",function(e){
+                    //关闭加入购物车
+                    _self.popbox.show = false;
+                });
             }
 
         },
@@ -680,6 +696,7 @@
                 var _self = this,
                     goodsid = _self.$route.params.goodsid;
 
+                console.log(transition)
                 $.ajax({
                     type: "GET",
                     url:'../../src/mock/detail.json',
@@ -692,7 +709,8 @@
                     dataType:"json",
                     success :function(json){
                         if(json&&json.code==0){
-
+                            console.log(_self)
+                            _self.$route.router.app.progressbar = false;
                             transition.next({
 
                                 goods:{
@@ -767,7 +785,6 @@
                     num = _self.selected.numbers,
                     goodsid = _self.$route.params.goodsid;
 
-
                 $.ajax({
                     type: "GET",
                     url:'../../src/mock/true.json',
@@ -791,10 +808,12 @@
         components:{
             "loading":require('./../components/loading.vue'),
             "swipe":Swipe,
-            "swipe-item":SwipeItem,
-            "tips":require('./../components/tips.vue')
+            "swipe-item":SwipeItem
         }
+    };
 
-    }
-
+    /*document.addEventListener("click",function(e){
+        //关闭上传弹出框
+        vm.$refs.uploadment.uploadshow = false;
+    });*/
 </script>

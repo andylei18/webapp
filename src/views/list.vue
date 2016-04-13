@@ -318,7 +318,7 @@
 
     require('../../node_modules/vue-swipe/lib/vue-swipe.css');
 
-    var { Swipe, SwipeItem } = require('vue-swipe');
+    var  {Swipe, SwipeItem}  = require('vue-swipe');
 
     module.exports = {
         data: function() {

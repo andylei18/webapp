@@ -124,6 +124,13 @@
 <template>
 
     <section id="addressScroll" class="wrap scroll">
+
+        <!--加载框-->
+        <loading :show="loadding.show"></loading>
+
+        <!--提示语框-->
+        <tips :show.sync="tips.show" :text="tips.text"></tips>
+
         <div>
             <div class="field-group theme">
                 <div class="control-group">
@@ -173,11 +180,61 @@
                 addressName:"",
                 addressTel:"",
                 addressAddress:"",
-                addressPostCode:""
+                addressPostCode:"",
+                loadding:{
+                    show:false,
+                    text:""
+                },
+                tips:{
+                    show:false,
+                    text:""
+                }
             }
         },
-        methods: {
+        route:{
+            data:function(transition){
+                var _self = this;
 
+
+                //获取订单 信息数据
+                _self.ajaxGetUserList(transition);
+            }
+
+        },
+        methods: {
+            //获取默认收货人地址信息
+            ajaxGetUserList:function(transition){
+
+                var _self = this;
+
+                $.ajax({
+                    type: "GET",
+                    url:'../../src/mock/getorderList.json',
+                    beforeSend:function(){
+                        //_self.loadding.show = true;
+                    },
+                    data:{
+                        uid:""
+                    },
+                    dataType:"json",
+                    success :function(json){
+
+                        if(json&&json.code==0){
+
+                            transition.next({
+
+                                addressName:json.data.addressName,
+                                addressTel:json.data.addressTel,
+                                addressAddress:json.data.addressAddress,
+                                addressPostCode:json.data.addressPostCode
+
+                            });
+
+                        }
+
+                    }
+                });
+            },
             //保存大表单
             saveForm:function(){
                 var _self = this;
@@ -188,23 +245,39 @@
                     type: "GET",
                     url:'../../src/mock/true.json',
                     dataType:"json",
+                    beforeSend:function(){
+                        _self.loadding.show = true;
+                    },
                     data:{data:_self.$data},
                     success :function(json){
 
+                        _self.loadding.show = false;
+
                         if(json&&json.code==0){
 
-                            _self.$router.go({
-                                name:'order',
-                                params:{
-                                    uid:uid
-                                }
-                            });
+                            _self.tips.show = true;
+
+                            _self.tips.text = json.message;
+
+                            setTimeout(function(){
+                                _self.$router.go({
+                                    name:'order',
+                                    params:{
+                                        uid:uid
+                                    }
+                                });
+                            },3000);
+
 
                         }
                     }
                 });
 
             }
+        },
+        components:{
+            "loading":require('./../components/loading.vue'),
+            "tips":require('./../components/tips.vue')
         }
 
     }

@@ -447,7 +447,7 @@
 
                 $.ajax({
                     type: "GET",
-                    url:'../../src/mock/cart.json',
+                    url:'src/mock/cart.json',
                     data:{
                         userid:_self.userid
                     },
