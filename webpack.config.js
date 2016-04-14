@@ -127,12 +127,48 @@ module.exports = {
                 test: /\.(png|jpg|gif)$/,
                 loader: 'url-loader?limit=8192'
             }, // 内联 base64 URLs, 限定 <=8k 的图片, 其他的用 URL
-            { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: "url-loader?limit=10000&minetype=application/font-woff"
+            {
+                test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+                loader: "url",
+                query: {
+                    name: '[name].[ext]?[hash]&mimetype=application/font-woff'
+                }
             },
-            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: "file-loader"
+            {
+                test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+                loader: "url",
+                query: {
+                    name: '[name].[ext]?[hash]&mimetype=application/font-woff2'
+                }
             },
+            {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                loader: "url",
+                query: {
+                    name: '[name].[ext]?mimetype=application/font-woff2'
+                }
+            },
+            {
+                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                loader: "url",
+                query: {
+                    name: '[name].[ext]?mimetype=application/font-woff2'
+                }
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                loader: "url",
+                query: {
+                    name: '[name].[ext]?mimetype=image/svg+xml'
+                }
+            },
+            {
+                test: /\.json(\?v=\d+\.\d+\.\d+)?$/,
+                loader: "url",
+                query: {
+                    name: '[name].[ext]?mimetype=application/json'
+                }
+            }
         ]
     },
     vue:{
