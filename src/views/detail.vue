@@ -491,8 +491,36 @@
                                 <div style="text-align: center;">
 
                                     <!--轮播图-->
-                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_45b43cedd4885c4e1b3e003b077bc8cc/640" border="0" width="640" height="640" alt="">
-                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_e23d1df0552b9d9055c35f40236a880d/640" border="0" width="640" height="640" alt="">
+                                    <swipe :speed="swipe.speed">
+                                        <swipe-item>
+                                            <img src="http://p.qpic.cn/qqjifen_pic/0/upload_45b43cedd4885c4e1b3e003b077bc8cc/640" border="0" width="640" height="640" alt="">
+                                        </swipe-item>
+                                        <swipe-item>
+                                            <img src="http://p.qpic.cn/qqjifen_pic/0/upload_e824114959516f150388425109813c88/640" border="0" width="640" height="640" alt="">
+                                        </swipe-item>
+                                        <swipe-item>
+                                            <img src="http://p.qpic.cn/qqjifen_pic/0/upload_eafdb51a1ce9c691e22d0e6d3f49f59c/640" border="0" width="640" height="640" alt="">
+                                        </swipe-item>
+                                        <swipe-item>
+                                            <img src="http://p.qpic.cn/qqjifen_pic/0/upload_53ba4a95b395de98d66185a05b595700/640" border="0" width="640" height="640" alt="">
+                                        </swipe-item>
+                                        <swipe-item>
+                                            <img src="http://p.qpic.cn/qqjifen_pic/0/upload_0463745c73b4798538e57f17599fecc8/640" border="0" width="640" height="640" alt="">
+                                        </swipe-item>
+                                        <swipe-item>
+                                            <img src="http://p.qpic.cn/qqjifen_pic/0/upload_46afcee77bbb04affab6ab87669ca21a/640" border="0" width="640" height="640" alt="">
+                                        </swipe-item>
+                                        <swipe-item>
+                                            <img src="http://p.qpic.cn/qqjifen_pic/0/upload_a12cd81192f8a8172140de3fee0fd79f/640" border="0" width="640" height="640" alt="">
+                                        </swipe-item>
+                                        <swipe-item>
+                                            <img src="http://p.qpic.cn/qqjifen_pic/0/upload_f518e38afe9f5130110728135dde5b6d/640" border="0" width="640" height="640" alt="">
+                                        </swipe-item>
+                                    </swipe>
+
+
+
+                                    <!--<img src="http://p.qpic.cn/qqjifen_pic/0/upload_e23d1df0552b9d9055c35f40236a880d/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_e824114959516f150388425109813c88/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_eafdb51a1ce9c691e22d0e6d3f49f59c/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_53ba4a95b395de98d66185a05b595700/640" border="0" width="640" height="640" alt="">
@@ -500,7 +528,7 @@
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_9caa328dccc67f8ca24a0eb3e962e118/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_46afcee77bbb04affab6ab87669ca21a/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_a12cd81192f8a8172140de3fee0fd79f/640" border="0" width="640" height="640" alt="">
-                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_f518e38afe9f5130110728135dde5b6d/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_f518e38afe9f5130110728135dde5b6d/640" border="0" width="640" height="640" alt="">-->
 
 
                                 </div>
@@ -536,11 +564,11 @@
             </div>
             <section class="slider">
                 <ul>
-                    <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_720df155098b2874c74040d59e0da41e/0" width="100%"></li>
+                    <!--<li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_720df155098b2874c74040d59e0da41e/0" width="100%"></li>
                     <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_14154717055ddec763379c05df5e5f3e/0" width="100%"></li>
                     <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_bf099cc7a24e71057180769d1e51c651/0" width="100%"></li>
                     <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_d3189304fc9be84fb638a9ca22741db3/0" width="100%"></li>
-                    <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_b20067753ffb95fafdf7d170d050b5d7/0" width="100%"></li>
+                    <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_b20067753ffb95fafdf7d170d050b5d7/0" width="100%"></li>-->
 
                     <!--<swipe :speed="swipe.speed">
                         <swipe-item>

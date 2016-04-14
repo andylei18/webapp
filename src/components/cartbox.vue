@@ -21,10 +21,10 @@
 
     <section class="fix-bottom" @click.stop>
         <div class=" ui-fn">
-            <div class="ui-fn-info">
+            <div class="ui-fn-info" @click="loveEvent">
                 <a href="javascript:void 0;" class="a-light">
-                    <i id="detailLikeNum" class="iconfont icon-love" _done="" _val="494"></i>
-                    494
+                    <i class="iconfont icon-love" :class="popbox.love?'icon-lovefull':''"></i>
+                    {{popbox.lovenum}}
                 </a>
             </div>
             <div>
@@ -81,7 +81,9 @@
                 popbox:{
                     show:false,
                     car:false,
-                    pay:false
+                    pay:false,
+                    love:false,
+                    lovenum:100
                 },
                 selected:{
                     size:"",
@@ -164,13 +166,13 @@
                 $.ajax({
                     type: "GET",
                     url:'../../src/mock/joinCar.json',
-                    beforeSend:function(){
-                        _self.$parent.loadding.show = true;
-                    },
                     data:{
                         goodsid:goodsid,
                         typeid:typeid,
                         numbers:num
+                    },
+                    beforeSend:function(){
+                        _self.$parent.loadding.show = true;
                     },
                     dataType:"json",
                     success :function(json){
@@ -192,9 +194,9 @@
             //立即购买
             payCallEvent:function(){
                 var _self = this,
-                        typeid = _self.selected.id,
-                        num = _self.selected.numbers,
-                        goodsid = _self.$route.params.goodsid;
+                    typeid = _self.selected.id,
+                    num = _self.selected.numbers,
+                    goodsid = _self.$route.params.goodsid;
 
                 $.ajax({
                     type: "GET",
@@ -219,6 +221,51 @@
                         }
                     }
                 });
+            },
+            //收藏事件
+            loveEvent:function(){
+                var _self = this,
+                    goodsid = _self.$route.params.goodsid;
+
+                _self.$parent.tips.show = true;
+
+                if(_self.popbox.love){
+
+                    _self.popbox.love = false;
+
+                    _self.popbox.lovenum =  _self.popbox.lovenum - 1;
+                }else{
+
+                    _self.popbox.love = true;
+
+                    _self.popbox.lovenum =  _self.popbox.lovenum + 1;
+                }
+
+                $.ajax({
+                    type: "GET",
+                    url:'../../src/mock/payCall.json',
+                    beforeSend:function(){
+                        _self.$parent.loadding.show = true;
+                    },
+                    data:{
+                        goodsid:goodsid
+                    },
+                    dataType:"json",
+                    success :function(json){
+
+                        _self.$parent.loadding.show = false;
+
+                        _self.$parent.tips.show = true;
+
+                        _self.$parent.tips.text = json.message;
+
+                        if(json&&json.code==0){
+
+
+                        }
+                    }
+                });
+
             }
         }
     };
