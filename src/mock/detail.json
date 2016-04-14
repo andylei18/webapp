@@ -9,6 +9,7 @@
       {"size":25,"numbers":3,"ck":false},
       {"size":45,"numbers":10,"ck":false}
     ],
+    "stock":123,
     "discount":true,
     "discountname":"用积分可再省6元",
     "price":22,

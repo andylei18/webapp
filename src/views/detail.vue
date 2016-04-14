@@ -409,21 +409,6 @@
         transition: all .3s ease;
         overflow-x: hidden;
     }
-
-
-    /* 必需 */
-    .car-popbox-transition {
-        transition: all .3s ease;
-        height: 250px;
-        overflow: hidden;
-    }
-
-    /* .car-popboxenter 定义进入的开始状态 */
-    /* .car-popbox-leave 定义离开的结束状态 */
-    .car-popbox-enter, .car-popbox-leave {
-        height: 0;
-        opacity: 0;
-    }
 </style>
 
 <template>
@@ -433,18 +418,21 @@
         <!--加载框-->
         <loading :show="loadding.show"></loading>
 
+        <!--提示语框-->
+        <tips :show.sync="tips.show" :text="tips.text"></tips>
+
         <div class="wrap">
-            <div class="wrap-summary">
+            <div class="wrap-summary" style="top: 573px; transform: translateY(0px);">
                 <section class="g-summary">
                     <div class="tit">
-                        <h2>标准Q妹公仔</h2>
+                        <h2>{{goods.goodsname}}</h2>
                         <div>
-                            <strong class="f-price">￥22</strong>
-                            <em class="f-em">（用积分可再省6元）</em>
-                            <span class="f-thin">(库存123件) </span>
+                            <strong class="f-price">￥{{goods.price}}</strong>
+                            <em class="f-em">（{{goods.discountname}}）</em>
+                            <span class="f-thin">(库存{{goods.stock}}件) </span>
                         </div>
                         <div>
-                            <del>原 价：￥29.9</del>
+                            <del>原 价：￥{{goods.oldprice}}</del>
                         </div>
                     </div>
                     <p> 憨态可掬的Q妹，曾走进了无数电脑屏幕，右下角的滴滴闪烁，成就了多少对相隔万里的恋人！买一对吧，把相遇变成陪伴，...</p>
@@ -458,7 +446,7 @@
                         <h2 class="layout-box-tit">1条评论</h2>
                         <div class="layout-box-cont border">
                             <div class="ui-comment-box ">
-                                <i class="user-pic"><img src="" width="100%"> </i>
+                                <i class="user-pic"><!--<img src="" width="100%"> --></i>
                                 <div class="ui-comment">
                                     <h5>林小红</h5>
                                     <p>行行青松翠柏里不曾有我生命的影子花丛中不曾有我生命的芳踪，行行青松翠柏里不曾有我生命的影子。</p>
@@ -471,8 +459,8 @@
                         <span>继续拖动，查看详情</span>
                     </div>
                     <section class="layout-box servise-box">
-                        <h2 class="layout-box-tit active">联系客服<i class="iconfont icon-ar-downthin"></i></h2>
-                        <div class="layout-box-cont border-up show">
+                        <h2 class="layout-box-tit" :class="servise.active?'active':''">联系客服<i class="iconfont icon-ar-downthin" @click.stop="this.servise.active=!this.servise.active"></i></h2>
+                        <div class="layout-box-cont border-up show" v-show="servise.active">
                             <div class="company-name">商家-鲜橙公司</div>
                             <dl class="contact">
                                 <dt>商家联系方式：</dt>
@@ -503,7 +491,7 @@
                                 <div style="text-align: center;">
 
                                     <!--轮播图-->
-                                    <!--<img src="http://p.qpic.cn/qqjifen_pic/0/upload_45b43cedd4885c4e1b3e003b077bc8cc/640" border="0" width="640" height="640" alt="">
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_45b43cedd4885c4e1b3e003b077bc8cc/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_e23d1df0552b9d9055c35f40236a880d/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_e824114959516f150388425109813c88/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_eafdb51a1ce9c691e22d0e6d3f49f59c/640" border="0" width="640" height="640" alt="">
@@ -512,7 +500,7 @@
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_9caa328dccc67f8ca24a0eb3e962e118/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_46afcee77bbb04affab6ab87669ca21a/640" border="0" width="640" height="640" alt="">
                                     <img src="http://p.qpic.cn/qqjifen_pic/0/upload_a12cd81192f8a8172140de3fee0fd79f/640" border="0" width="640" height="640" alt="">
-                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_f518e38afe9f5130110728135dde5b6d/640" border="0" width="640" height="640" alt="">-->
+                                    <img src="http://p.qpic.cn/qqjifen_pic/0/upload_f518e38afe9f5130110728135dde5b6d/640" border="0" width="640" height="640" alt="">
 
 
                                 </div>
@@ -525,7 +513,7 @@
                             </div>
                         </div>
                     </section>
-                    <section class="layout-box border">
+                    <!--<section class="layout-box border">
                         <h2 class="layout-box-tit">精品推荐</h2>
                         <div class="layout-box-cont ui-pic-list">
                             <div class="pic">
@@ -538,33 +526,39 @@
                                 <img src="" width="100%">
                             </div>
                         </div>
-                    </section>
+                    </section>-->
                 </div>
             </div>
-            <div class="mask" v-show="mask"></div>
+            <div class="mask" v-show="maskshow"></div>
             <div class="btn-round-cart">
                 <i class="iconfont icon-cart"></i>
                 <sup>1</sup>
             </div>
             <section class="slider">
                 <ul>
-                   <!-- <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_720df155098b2874c74040d59e0da41e/0" width="100%"></li>
+                    <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_720df155098b2874c74040d59e0da41e/0" width="100%"></li>
                     <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_14154717055ddec763379c05df5e5f3e/0" width="100%"></li>
                     <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_bf099cc7a24e71057180769d1e51c651/0" width="100%"></li>
                     <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_d3189304fc9be84fb638a9ca22741db3/0" width="100%"></li>
-                    <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_b20067753ffb95fafdf7d170d050b5d7/0" width="100%"></li>-->
+                    <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_b20067753ffb95fafdf7d170d050b5d7/0" width="100%"></li>
 
-                    <swipe :speed="swipe.speed">
+                    <!--<swipe :speed="swipe.speed">
                         <swipe-item>
-                            <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_45b43cedd4885c4e1b3e003b077bc8cc/640" :alt="">
+                            <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_720df155098b2874c74040d59e0da41e/0" width="100%"></li>
                         </swipe-item>
                         <swipe-item>
-                            <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_e23d1df0552b9d9055c35f40236a880d/640" :alt="">
+                            <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_720df155098b2874c74040d59e0da41e/0" width="100%"></li>
                         </swipe-item>
                         <swipe-item>
-                            <img :src="http://p.qpic.cn/qqjifen_pic/0/upload_e824114959516f150388425109813c88/640" :alt="">
+                            <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_720df155098b2874c74040d59e0da41e/0" width="100%"></li>
                         </swipe-item>
-                    </swipe>
+                        <swipe-item>
+                            <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_720df155098b2874c74040d59e0da41e/0" width="100%"></li>
+                        </swipe-item>
+                        <swipe-item>
+                            <li style="width:20%"><img src="http://p.qpic.cn/qqjifen_pic/0/upload_720df155098b2874c74040d59e0da41e/0" width="100%"></li>
+                        </swipe-item>
+                    </swipe>-->
 
 
                 </ul>
@@ -578,60 +572,8 @@
             </section>
         </div>
 
-
-        <section class="fix-bottom">
-            <div class=" ui-fn">
-                <div class="ui-fn-info">
-                    <a href="javascript:void 0;" class="a-light" id="detailLikeBtn">
-                        <i id="detailLikeNum" class="iconfont icon-love" _done="" _val="494"></i>
-                        494
-                    </a>
-                </div>
-                <div>
-                    <button type="button" class="btn-green" @click.stop="this.popbox.show = true">加入购物车</button>
-                    &nbsp;&nbsp;
-                    <button type="button" class="btn-buy">立即购买</button>
-                </div>
-            </div>
-        </section>
-
-
-        <section class="pop-box fix-bt" v-show="popbox.show" transition="car-popbox" @click.stop>
-            <div class="buy-entry">
-                <div class="pop-cont">
-                    <h2>{{goods.goodsname}}</h2>
-                    <div class="ui-fn-info">
-                        <p>
-                            <strong class="f-price">￥{{goods.price}}</strong>
-                            <span class="f-em">（{{goods.discountname}}）</span>
-                        </p>
-                        <del>原价：￥{{goods.oldprice}}</del>
-                    </div>
-                    <div class="ui-fn-select ">
-                        <dl>
-                            <dt>{{goods.typename}}</dt>
-                            <dd>
-                                <label v-for="item in goods.typelist" :class="item.ck?'selected':''" @click="selectedType(item)">{{item.size}}CM<i class="iconfont icon-rightp"></i></label>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>数量</dt>
-                            <dd>
-                                <div class="ui-duration">
-                                    <a href="javascript:void 0;" @click="calculation(0)"><span>-</span></a>
-                                    <div class="dur-ipt">
-                                        <input type="text" :value="selected.numbers" v-model="selected.numbers" maxlength="3"></div>
-                                    <a href="javascript:void 0;" @click="calculation(1)"><span>+</span></a>
-                                </div>
-                            </dd>
-                        </dl>
-                    </div>
-                </div>
-                <button type="button" class="btn-buy" v-show="popbox.btn.pay">立即购买</button>
-                <button type="button" class="btn-green" @click.stop="joinCarEvent">加入购物车</button>
-            </div>
-        </section>
-
+        <!--底部购物车盒-->
+        <cartbox :goods="goods" v-ref:cartbox></cartbox>
     </div>
 
 
@@ -650,15 +592,17 @@
                   loadding:{
                     show:false
                   },
+                  tips:{
+                      show:false,
+                      text:""
+                  },
                   swipe:{
                       speed:3000
                   },
-                  popbox:{
-                      show:false,
-                      btn:{
-                          pay:false
-                      }
+                  servise:{
+                      active:false
                   },
+                  maskshow:false,
                   goods:{
                       goodsname:"",
                       typename:"",
@@ -666,14 +610,9 @@
                       discount:true,
                       discountname:"",
                       price:"",
-                      oldprice:""
+                      oldprice:"",
+                      stock:""
                   },
-                  selected:{
-                      size:"",
-                      numbers:1,
-                      ck:false,
-                      stock:"",
-                  }
               }
         },
         route:{
@@ -684,8 +623,10 @@
 
                 document.addEventListener("click",function(e){
                     //关闭加入购物车
-                    _self.popbox.show = false;
+                    _self.$refs.cartbox.popbox.show = false;
+                    _self.maskshow = false;
                 });
+
             }
 
         },
@@ -696,23 +637,21 @@
                 var _self = this,
                     goodsid = _self.$route.params.goodsid;
 
-                console.log(transition)
                 $.ajax({
                     type: "GET",
                     url:'../../src/mock/detail.json',
-                    beforeSend:function(){
-                        //_self.loadding.show = true;
-                    },
                     data:{
                         goodsid:goodsid
                     },
                     dataType:"json",
                     success :function(json){
-                        if(json&&json.code==0){
-                            console.log(_self)
-                            _self.$route.router.app.progressbar = false;
-                            transition.next({
 
+                        //请求完毕关闭进度条
+                        _self.$route.router.app.progressbar = false;
+
+                        if(json&&json.code==0){
+
+                            transition.next({
                                 goods:{
                                     goodsname:json.data.goodsname,
                                     typename:json.data.typename,
@@ -736,84 +675,13 @@
                 });
 
             },
-            //选择商品规格
-            selectedType:function(obj){
-                var _self = this,
-                    listdata = _self.goods.typelist;
-
-                for(var i in listdata){
-                    listdata[i].ck=false;
-                }
-
-                obj.ck = true;
-
-                _self.selected.size = obj.size;
-
-                _self.selected.stock = obj.numbers;
-
-                _self.selected.ck = obj.ck;
-
-                _self.selected.numbers = 1;
-            },
-            //计算选择商品规格的数量
-            calculation:function(num){
-                var _self = this,
-                    obj = _self.selected;
-
-                if(num == 0){
-
-                    if(obj.numbers <= obj.stock && obj.numbers > 1){
-
-                        obj.numbers = parseInt(obj.numbers) - 1;
-
-                    }
-
-                }else{
-
-                    if(obj.numbers < obj.stock){
-
-                        obj.numbers = parseInt(obj.numbers) + 1;
-
-                    }
-
-                }
-            },
-            //加入购物车
-            joinCarEvent:function(){
-                var _self = this,
-                    typeid = _self.selected.id,
-                    num = _self.selected.numbers,
-                    goodsid = _self.$route.params.goodsid;
-
-                $.ajax({
-                    type: "GET",
-                    url:'../../src/mock/true.json',
-                    beforeSend:function(){
-                        //_self.loadding.show = true;
-                    },
-                    data:{
-                        goodsid:goodsid,
-                        typeid:typeid,
-                        numbers:num
-                    },
-                    dataType:"json",
-                    success :function(json){
-                        if(json&&json.code==0){
-
-                        }
-                    }
-                });
-            }
         },
         components:{
             "loading":require('./../components/loading.vue'),
             "swipe":Swipe,
-            "swipe-item":SwipeItem
+            "swipe-item":SwipeItem,
+            "tips":require('./../components/tips.vue'),
+            "cartbox":require('./../components/cartbox.vue')
         }
     };
-
-    /*document.addEventListener("click",function(e){
-        //关闭上传弹出框
-        vm.$refs.uploadment.uploadshow = false;
-    });*/
 </script>
