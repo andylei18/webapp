@@ -9,6 +9,13 @@ var VueAsyncData = require('vue-async-data');
 Vue.use(VueAsyncData);
 var App = Vue.extend(require('./app.vue'));
 
+var lazyload = require('vue-lazyload');
+
+Vue.use(lazyload, {
+    error: '../src/img/common/error.png',
+    loading: '../src/img/common/loading.gif',
+    try: 3 // default 2
+});
 
 $.ajaxSettings.crossDomain = true;
 

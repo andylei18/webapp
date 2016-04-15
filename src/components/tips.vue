@@ -6,6 +6,8 @@
         margin: 20px 0;
         padding: 10px 10px 10px 5px;
         position:absolute;
+        top:50%;
+        left: 50%;
         z-index : 5001;
         visibility:visible
     }
@@ -42,7 +44,7 @@
     <section
             v-show="show"
             class="warn-tips"
-            :style="{left:left+'px',top:top+'px'}"
+            :style="{margin-left:'-'+left+'px',margin-top:'-'+top+'px'}"
             >
         <p>{{this.text==''||this.text==undefined?'提示语sorry':this.text}}</p>
     </section>
@@ -60,11 +62,11 @@
         props:['show','text'],
         ready:function(){
             var _self = this,
-                    bodyW = document.body.clientWidth,
-                    bodyH = document.body.clientHeight;
+                    bodyW = document.documentElement.clientWidth,
+                    bodyH = document.documentElement.clientHeight;
 
-            _self.left = Math.round(bodyW / 3.1);
-            _self.top = Math.round(bodyH / 2.12);
+            _self.left = Math.round(bodyW / 2);
+            _self.top = Math.round(bodyH / 2);
         },
         watch:{
             'show':function(val,oldval){
