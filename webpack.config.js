@@ -125,7 +125,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                loader: 'url-loader?limit=8192'
+                loader: "file-loader?name=images/[hash].[ext]"
             }, // 内联 base64 URLs, 限定 <=8k 的图片, 其他的用 URL
             {
                 test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,

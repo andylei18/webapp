@@ -66,6 +66,7 @@
             };
         },
         components:{
+
             "progressBar":require('./components/progressbar.vue')
         }
     }

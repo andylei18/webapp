@@ -26,18 +26,6 @@ dinglei
 
 5e209b29-4666-47e1-8dfc-d676ec2cbe28
 
-components
-dir
-
-font
-dir
-
-css
-dir
-
-mock
-dir
-
 app.js
 file
 217715
@@ -71,6 +59,59 @@ dinglei
 
 
 1025
+
+app.vue
+file
+217874
+
+
+
+2016-04-12T06:44:56.000000Z
+3ae6489e457305a1b961957cb29bf10e
+2016-04-12T08:07:43.576639Z
+217874
+dinglei
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1739
+
+components
+dir
+
+css
+dir
+
+font
+dir
+
+js
+dir
+
+
+
+add
+
+mock
+dir
 
 router.js
 file
@@ -108,38 +149,4 @@ dinglei
 
 views
 dir
-
-app.vue
-file
-217874
-
-
-
-2016-04-12T06:44:56.000000Z
-3ae6489e457305a1b961957cb29bf10e
-2016-04-12T08:07:43.576639Z
-217874
-dinglei
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1739
 

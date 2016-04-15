@@ -296,6 +296,9 @@
                     },
                     success :function(json){
 
+                        //请求完毕关闭进度条
+                        _self.$route.router.app.progressbar = false;
+
                         if(json&&json.code==0){
 
                             transition.next({

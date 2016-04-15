@@ -232,12 +232,13 @@
     }
 </style>
 <template>
+    <!-- 初始化炸花 -->
+    <cover :show="loadding.show"></cover>
 
     <div id="applist">
         <div class="page">
-
             <!--加载框-->
-            <loading :show="loadding.show"></loading>
+            <loading :show="this.$route.router.app.progressbar"></loading>
 
             <div class="page-cover" v-if="menu.show" @click="showMenus"></div>
 
@@ -290,7 +291,7 @@
                     <section id="goodsList">
 
                         <a class="ui-product" v-for="item in goodlist" v-link="{name:'detail',params:{goodsid:item.goodsid}}">
-                            <img width="100%" :src="item.img">
+                            <img width="100%" :src="item.img" v-lazyload:opt.fadein="item.img">
                             <p class="reply">
                                 <span class="tit">{{item.name}}</span>
                             <span class="like">
@@ -317,6 +318,7 @@
     //require('../../src/css/views/home.css');
 
     require('../../node_modules/vue-swipe/lib/vue-swipe.css');
+
 
     var  {Swipe, SwipeItem}  = require('vue-swipe');
 
@@ -379,7 +381,8 @@
                     dataType:"json",
                     success :function(data){
                         var json = Mock.mock(data);
-
+                        //请求完毕关闭进度条
+                        _self.$route.router.app.progressbar = false;
                         _self.scroll = true;
 
                         _self.loadding.show = false;
@@ -427,8 +430,9 @@
             }
         },
         components:{
-            "bpMenu":require('./../components/menu.vue'),
-            "loading":require('./../components/loading.vue'),
+            "cover":require('../../src/components/cover.vue'),
+            "bpMenu":require('../../src/components/menu.vue'),
+            "loading":require('../../src/components/loading.vue'),
             "swipe":Swipe,
             "swipe-item":SwipeItem
         }

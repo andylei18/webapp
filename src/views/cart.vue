@@ -451,13 +451,11 @@
                     data:{
                         userid:_self.userid
                     },
-                    beforeSend:function(){
-                        _self.loadding.show = true;
-                    },
                     dataType:"json",
                     success :function(json){
 
-                        _self.loadding.show = false;
+                        //请求完毕关闭进度条
+                        _self.$route.router.app.progressbar = false;
 
                         if(json&&json.code==0){
 

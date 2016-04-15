@@ -9,6 +9,7 @@ var VueAsyncData = require('vue-async-data');
 Vue.use(VueAsyncData);
 var App = Vue.extend(require('./app.vue'));
 
+
 $.ajaxSettings.crossDomain = true;
 
 //防止点击穿透
