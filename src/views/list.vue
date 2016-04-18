@@ -291,7 +291,7 @@
                     <section id="goodsList">
 
                         <a class="ui-product" v-for="item in goodlist" v-link="{name:'detail',params:{goodsid:item.goodsid}}">
-                            <img width="100%" v-lazy=item.img">
+                            <img width="100%" v-lazy="item.img">
                             <p class="reply">
                                 <span class="tit">{{item.name}}</span>
                             <span class="like">
