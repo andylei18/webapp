@@ -611,7 +611,9 @@
 
     require('../../node_modules/vue-swipe/lib/vue-swipe.css');
 
-    var {Swipe, SwipeItem} = require('vue-swipe');
+    var swiper = require('vue-swipe');
+    var Swipe = swiper.Swipe;
+    var SwipeItem = swiper.SwipeItem;
 
     module.exports = {
         replace:true,
