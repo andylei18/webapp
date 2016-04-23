@@ -13,12 +13,18 @@
 
 Vue.js is an MIT-licensed open source project. Its ongoing development is made possible thanks to the support by these awesome [backers](https://github.com/vuejs/vue/blob/dev/backers.md). If you'd like to join them, check out [Vue.js' Patreon campaign](https://www.patreon.com/evanyou).
 
+**Special thanks to the generous sponsorship by:**
+
+<a href="https://strikingly.com/s/careers?utm_source=v">
+  <img width="300px" src="https://raw.githubusercontent.com/vuejs/vuejs.org/master/themes/vue/source/images/strikingly.png">
+</a>
+
 ## Intro
 
 Vue.js is a library for building interactive web interfaces. It provides data-reactive components with a simple and flexible API. Core features include:
 
-- [Dead simple, unobtrusive reactivity using plain JavaScript objects.](http://vuejs.org/guide/overview.html#Reactive_Data_Binding)
-- [Component-oriented development style with tooling support](http://vuejs.org/guide/overview.html#Component_System)
+- [Dead simple, unobtrusive reactivity using plain JavaScript objects.](http://vuejs.org/guide/overview.html#Reactive-Data-Binding)
+- [Component-oriented development style with tooling support](http://vuejs.org/guide/overview.html#Component-System)
 - Lean and extensible core
 - [Flexible transition effect system](http://vuejs.org/guide/transitions.html)
 - Fast without the need for complex optimization

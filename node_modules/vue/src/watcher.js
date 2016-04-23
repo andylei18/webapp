@@ -18,7 +18,7 @@ let uid = 0
  * This is used for both the $watch() api and directives.
  *
  * @param {Vue} vm
- * @param {String} expression
+ * @param {String|Function} expOrFn
  * @param {Function} cb
  * @param {Object} options
  *                 - {Array} filters
@@ -83,12 +83,9 @@ Watcher.prototype.get = function () {
       config.warnExpressionErrors
     ) {
       warn(
-        'Error when evaluating expression "' +
-        this.expression + '". ' +
-        (config.debug
-          ? ''
-          : 'Turn on debug mode to see stack trace.'
-        ), e
+        'Error when evaluating expression ' +
+        '"' + this.expression + '": ' + e.toString(),
+        this.vm
       )
     }
   }
@@ -130,8 +127,9 @@ Watcher.prototype.set = function (value) {
       config.warnExpressionErrors
     ) {
       warn(
-        'Error when evaluating setter "' +
-        this.expression + '"', e
+        'Error when evaluating setter ' +
+        '"' + this.expression + '": ' + e.toString(),
+        this.vm
       )
     }
   }
@@ -144,7 +142,8 @@ Watcher.prototype.set = function (value) {
         'a v-for alias (' + this.expression + '), and the ' +
         'v-for has filters. This will not work properly. ' +
         'Either remove the filters or use an array of ' +
-        'objects and bind to object properties instead.'
+        'objects and bind to object properties instead.',
+        this.vm
       )
       return
     }

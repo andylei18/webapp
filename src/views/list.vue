@@ -316,7 +316,6 @@
 <script>
 
     //require('../../src/css/views/home.css');
-
     require('../../node_modules/vue-swipe/lib/vue-swipe.css');
 
     var swiper = require('vue-swipe');

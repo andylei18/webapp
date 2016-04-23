@@ -15,7 +15,8 @@ export default function (Vue) {
   Vue.prototype.$mount = function (el) {
     if (this._isCompiled) {
       process.env.NODE_ENV !== 'production' && warn(
-        '$mount() should be called only once.'
+        '$mount() should be called only once.',
+        this
       )
       return
     }
@@ -47,6 +48,9 @@ export default function (Vue) {
   /**
    * Teardown the instance, simply delegate to the internal
    * _destroy.
+   *
+   * @param {Boolean} remove
+   * @param {Boolean} deferCleanup
    */
 
   Vue.prototype.$destroy = function (remove, deferCleanup) {
@@ -59,6 +63,8 @@ export default function (Vue) {
    *
    * @param {Element|DocumentFragment} el
    * @param {Vue} [host]
+   * @param {Object} [scope]
+   * @param {Fragment} [frag]
    * @return {Function}
    */
 

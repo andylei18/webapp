@@ -57,6 +57,7 @@
 
 </template>
 <script>
+
     module.exports = {
         data: function() {
             return {
@@ -66,7 +67,6 @@
             };
         },
         components:{
-
             "progressBar":require('./components/progressbar.vue')
         }
     }

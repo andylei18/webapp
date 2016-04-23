@@ -85,13 +85,13 @@ module.exports = function(router){
         // 	console.log('通过配置路由中自定义的字段验证是否需要登陆');
         // }
         /*if(transition.to.name == 'forbidden'){
-            router.app.authenticating = true;
-            setTimeout(function(){
-                router.app.authenticating = false;
-                alert('此路由在全局中设置为中止');
-                transition.abort();
-            },1500);
-        }*/
+         router.app.authenticating = true;
+         setTimeout(function(){
+         router.app.authenticating = false;
+         alert('此路由在全局中设置为中止');
+         transition.abort();
+         },1500);
+         }*/
 
         //router.app.progressbar = false;
 

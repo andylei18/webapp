@@ -1,6 +1,7 @@
 /**
  * Created by dinglei on 16/3/18.
  */
+
 //VUE 依赖配置
 var Vue = require('vue');
 var VueRouter = require('vue-router');

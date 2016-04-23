@@ -11,6 +11,7 @@ import {
 export default {
 
   priority: IF,
+  terminal: true,
 
   bind () {
     var el = this.el
@@ -27,7 +28,8 @@ export default {
     } else {
       process.env.NODE_ENV !== 'production' && warn(
         'v-if="' + this.expression + '" cannot be ' +
-        'used on an instance root element.'
+        'used on an instance root element.',
+        this.vm
       )
       this.invalid = true
     }
