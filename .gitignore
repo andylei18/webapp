@@ -1,5 +1,11 @@
+.DS_Store
 node_modules/
-build/
-d.html
+dist/
 npm-debug.log
-.svn/
+selenium-debug.log
+test/unit/coverage
+test/e2e/reports
+<<<<<<< Updated upstream
+.idea
+=======
+>>>>>>> Stashed changes
